@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2003
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SIS.WebServer", "SIS.WebServer\SIS.WebServer.csproj", "{9069BFBB-817C-4FA4-A980-E20E9DD7A469}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SIS.HTTP", "SIS.HTTP\SIS.HTTP.csproj", "{9C8ADFD1-16AE-4365-A160-A1C6091A0509}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SIS.Demo", "SIS.Demo\SIS.Demo.csproj", "{DE45BDD7-7D46-4DF9-8A5A-E0E3F25918DF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9069BFBB-817C-4FA4-A980-E20E9DD7A469}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9069BFBB-817C-4FA4-A980-E20E9DD7A469}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9069BFBB-817C-4FA4-A980-E20E9DD7A469}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9069BFBB-817C-4FA4-A980-E20E9DD7A469}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C8ADFD1-16AE-4365-A160-A1C6091A0509}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C8ADFD1-16AE-4365-A160-A1C6091A0509}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C8ADFD1-16AE-4365-A160-A1C6091A0509}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C8ADFD1-16AE-4365-A160-A1C6091A0509}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE45BDD7-7D46-4DF9-8A5A-E0E3F25918DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE45BDD7-7D46-4DF9-8A5A-E0E3F25918DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE45BDD7-7D46-4DF9-8A5A-E0E3F25918DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE45BDD7-7D46-4DF9-8A5A-E0E3F25918DF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7DDABD09-DCFC-4DD2-996C-EDD241D1D1F0}
+	EndGlobalSection
+EndGlobal

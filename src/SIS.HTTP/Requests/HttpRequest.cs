@@ -178,7 +178,7 @@ namespace SIS.HTTP.Requests
         private void ParseRequest(string requestString)
         {
             string[] splitRequestContent = requestString
-                .Split(new[] {Environment.NewLine}, StringSplitOptions.None);
+                .Split(new[] {GlobalConstants.HttpNewLine}, StringSplitOptions.None);
 
             string[] requestLine = splitRequestContent[0].Trim().
                 Split(new [] {' '}, StringSplitOptions.RemoveEmptyEntries);

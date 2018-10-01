@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 using SIS.HTTP.Common;
 using SIS.HTTP.Cookies;
@@ -49,15 +48,15 @@ namespace SIS.HTTP.Responses
             StringBuilder result = new StringBuilder();
 
             result
-                .Append($"{GlobalConstants.HttpOneProtocolFragment} {this.StatusCode.GetResponseLine()}").Append(Environment.NewLine)
-                .Append(this.Headers).Append(Environment.NewLine);
+                .Append($"{GlobalConstants.HttpOneProtocolFragment} {this.StatusCode.GetResponseLine()}").Append(GlobalConstants.HttpNewLine)
+                .Append(this.Headers).Append(GlobalConstants.HttpNewLine);
 
             if (this.Cookies.HasCookies())
             {
-                result.Append($"Set-Cookie: {this.Cookies}").Append(Environment.NewLine);
+                result.Append($"Set-Cookie: {this.Cookies}").Append(GlobalConstants.HttpNewLine);
             }
 
-            result.Append(Environment.NewLine);
+            result.Append(GlobalConstants.HttpNewLine);
 
             return result.ToString();
         }

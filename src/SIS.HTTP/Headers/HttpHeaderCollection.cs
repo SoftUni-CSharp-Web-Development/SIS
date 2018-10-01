@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using SIS.HTTP.Common;
 
 namespace SIS.HTTP.Headers
 {
@@ -29,7 +29,7 @@ namespace SIS.HTTP.Headers
 
         public override string ToString()
         {
-            return string.Join(Environment.NewLine, this.headers.Values);
+            return string.Join(GlobalConstants.HttpNewLine, this.headers.Values);
         }
     }
 }

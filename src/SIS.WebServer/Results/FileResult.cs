@@ -1,4 +1,4 @@
-﻿using SIS.HTTP;
+﻿using SIS.HTTP.Headers;
 using SIS.HTTP.Responses;
 
 namespace SIS.WebServer.Results
@@ -7,8 +7,8 @@ namespace SIS.WebServer.Results
     {
         public FileResult(byte[] content)
         {
-            this.Headers.Add(new HttpHeader("Content-Length", content.Length.ToString()));
-            this.Headers.Add(new HttpHeader("Content-Disposition", "inline"));
+            this.Headers.Add(new HttpHeader(HttpHeader.ContentLength, content.Length.ToString()));
+            this.Headers.Add(new HttpHeader(HttpHeader.ContentDisposition, "inline"));
             this.Content = content;
         }
     }

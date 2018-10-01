@@ -43,8 +43,7 @@ namespace SIS.WebServer
             {
                 var client = await this.listener.AcceptSocketAsync();
                 var connectionHandler = new ConnectionHandler(client, this.serverRoutingTable);
-                var responseTask = connectionHandler.ProcessRequestAsync();
-                responseTask.Wait();
+                await connectionHandler.ProcessRequestAsync();
             }
         }
     }

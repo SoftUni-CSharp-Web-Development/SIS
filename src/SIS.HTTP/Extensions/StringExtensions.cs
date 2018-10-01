@@ -1,6 +1,4 @@
-﻿using System.Collections.Concurrent;
-
-namespace SIS.HTTP.Extensions
+﻿namespace SIS.HTTP.Extensions
 {
     public static class StringExtensions
     {

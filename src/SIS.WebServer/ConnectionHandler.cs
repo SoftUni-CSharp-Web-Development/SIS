@@ -2,9 +2,13 @@
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using SIS.HTTP.Cookies;
 using SIS.HTTP.Enums;
+using SIS.HTTP.Exceptions;
 using SIS.HTTP.Requests;
 using SIS.HTTP.Responses;
+using SIS.HTTP.Sessions;
+using SIS.WebServer.Results;
 using SIS.WebServer.Routing;
 
 namespace SIS.WebServer
@@ -72,26 +76,62 @@ namespace SIS.WebServer
             await this.client.SendAsync(byteSegments, SocketFlags.None);
         }
 
+        private string SetRequestSession(IHttpRequest httpRequest)
+        {
+            string sessionId = null;
+
+            if (httpRequest.Cookies.ContainsCookie(HttpSessionStorage.SessionCookieKey))
+            {
+                var cookie = httpRequest.Cookies.GetCookie(HttpSessionStorage.SessionCookieKey);
+                sessionId = cookie.Value;
+                httpRequest.Session = HttpSessionStorage.GetSession(sessionId);
+            }
+            else
+            {
+                sessionId = Guid.NewGuid().ToString();
+                httpRequest.Session = HttpSessionStorage.GetSession(sessionId);
+            }
+
+            return sessionId;
+        }
+
+        private void SetResponseSession(IHttpResponse httpResponse, string sessionId)
+        {
+            if (sessionId != null)
+            {
+                httpResponse
+                    .AddCookie(new HttpCookie(HttpSessionStorage.SessionCookieKey
+                        , $"{sessionId};HttpOnly=true"));
+            }
+        }
+
         public async Task ProcessRequestAsync()
         {
-            var httpRequest = await this.ReadRequest();
-
-            if (httpRequest != null)
+            try
             {
-                var httpResponse = this.HandleRequest(httpRequest);
+                var httpRequest = await this.ReadRequest();
 
-                await this.PrepareResponse(httpResponse);
+                if (httpRequest != null)
+                {
+                    string sessionId = this.SetRequestSession(httpRequest);
+
+                    var httpResponse = this.HandleRequest(httpRequest);
+
+                    this.SetResponseSession(httpResponse, sessionId);
+
+                    await this.PrepareResponse(httpResponse);
+                }
+            }
+            catch (BadRequestException e)
+            {
+                await this.PrepareResponse(new TextResult(e.Message, HttpResponseStatusCode.BadRequest));
+            }
+            catch (Exception e)
+            {
+                await this.PrepareResponse(new TextResult(e.Message, HttpResponseStatusCode.InternalServerError));
             }
 
             this.client.Shutdown(SocketShutdown.Both);
         }
     }
 }
-
-
-
-//Console.WriteLine($"-----REQUEST-----");
-//Console.WriteLine(httpRequest);
-//Console.WriteLine($"-----RESPONSE-----");
-//Console.WriteLine(httpResponse is FileResult? "[[File response truncated]]" : httpResponse.ToString());
-//Console.WriteLine();

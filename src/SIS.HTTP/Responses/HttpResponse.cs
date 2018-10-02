@@ -52,7 +52,7 @@ namespace SIS.HTTP.Responses
             var response = new StringBuilder();
            
             response.AppendLine($"{GlobalConstants.HttpOneProtocolFragment} {this.StatusCode.GetResponseLine()}")
-                .AppendLine(this.Headres.ToString());
+                .AppendLine(this.Headers.ToString());
 
             if (this.Cookies.HasCookies())
             {

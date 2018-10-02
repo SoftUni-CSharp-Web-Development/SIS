@@ -4,15 +4,16 @@ using System.Text;
 using System.Threading.Tasks;
 using SIS.HTTP.Cookies;
 using SIS.HTTP.Enums;
-using SIS.HTTP.Exceptions;
-using SIS.HTTP.Requests;
-using SIS.HTTP.Responses;
-using SIS.HTTP.Sessions;
-using SIS.WebServer.Results;
-using SIS.WebServer.Routing;
-
 namespace SIS.WebServer
 {
+    using HTTP.Common;
+    using HTTP.Exceptions;
+    using HTTP.Requests;
+    using HTTP.Responses;
+    using HTTP.Sessions;
+    using Results;
+    using Routing;
+
     public class ConnectionHandler
     {
         private readonly Socket client;
@@ -23,6 +24,9 @@ namespace SIS.WebServer
             Socket client,
             ServerRoutingTable serverRoutingTable)
         {
+            CoreValidator.ThrowIfNull(client, nameof(client));
+            CoreValidator.ThrowIfNull(serverRoutingTable, nameof(serverRoutingTable));
+
             this.client = client;
             this.serverRoutingTable = serverRoutingTable;
         }

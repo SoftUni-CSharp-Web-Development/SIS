@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
-
-namespace SIS.HTTP.Cookies
+﻿namespace SIS.HTTP.Cookies
 {
+    using System.Collections.Generic;
+    using Common;
+
     public class HttpCookieCollection : IHttpCookieCollection
     {
         private const string HttpCookieStringSeparator = "; ";
@@ -15,16 +16,19 @@ namespace SIS.HTTP.Cookies
 
         public void Add(HttpCookie cookie)
         {
+            CoreValidator.ThrowIfNull(cookie, nameof(cookie));
             this.cookies.Add(cookie.Key, cookie);
         }
 
         public bool ContainsCookie(string key)
         {
+            CoreValidator.ThrowIfNull(key, nameof(key));
             return this.cookies.ContainsKey(key);
         }
 
         public HttpCookie GetCookie(string key)
         {
+            CoreValidator.ThrowIfNull(key, nameof(key));
             return this.cookies.GetValueOrDefault(key, null);
         }
 

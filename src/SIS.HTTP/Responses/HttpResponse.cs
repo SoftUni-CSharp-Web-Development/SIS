@@ -14,6 +14,8 @@ namespace SIS.HTTP.Responses
 
         public HttpResponse(HttpResponseStatusCode statusCode)
         {
+            CoreValidator.ThrowIfNull(statusCode, nameof(statusCode));
+
             this.Headers = new HttpHeaderCollection();
             this.Cookies = new HttpCookieCollection();
             this.Content = new byte[0];
@@ -30,11 +32,13 @@ namespace SIS.HTTP.Responses
         
         public void AddHeader(HttpHeader header)
         {
+            CoreValidator.ThrowIfNull(header, nameof(header));
             this.Headers.Add(header);
         }
 
         public void AddCookie(HttpCookie cookie)
         {
+            CoreValidator.ThrowIfNull(cookie, nameof(cookie));
             this.Cookies.Add(cookie);
         }
 

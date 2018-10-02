@@ -7,5 +7,11 @@
         public const string HostHeaderKey = "Host";
 
         public const string HttpNewLine = "\r\n";
+
+        public const string CookieRequestHeaderName = "Cookie";
+
+        public const string CookieResponseHeaderName = "Set-Cookie";
+
+        public const int ExactNumberOfParametersInRequestHeaderKeyValuePair = 2;
     }
 }

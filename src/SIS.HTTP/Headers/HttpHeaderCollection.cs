@@ -14,16 +14,19 @@ namespace SIS.HTTP.Headers
 
         public void Add(HttpHeader header)
         {
+            CoreValidator.ThrowIfNull(header, nameof(header));
             this.headers.Add(header.Key, header);
         }
 
         public bool ContainsHeader(string key)
         {
+            CoreValidator.ThrowIfNull(key, nameof(key));
             return this.headers.ContainsKey(key);
         }
 
         public HttpHeader GetHeader(string key)
         {
+            CoreValidator.ThrowIfNull(key, nameof(key));
             return this.headers.GetValueOrDefault(key, null);
         }
 

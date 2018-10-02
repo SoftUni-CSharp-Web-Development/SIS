@@ -1,7 +1,7 @@
-﻿using System.Net;
-
-namespace SIS.HTTP.Headers
+﻿namespace SIS.HTTP.Headers
 {
+    using Common;
+
     public class HttpHeader
     {
         public const string Cookie = "Cookie";
@@ -20,6 +20,9 @@ namespace SIS.HTTP.Headers
 
         public HttpHeader(string key, string value)
         {
+            CoreValidator.ThrowIfNullOrEmpty(key, nameof(key));
+            CoreValidator.ThrowIfNullOrEmpty(value, nameof(value));
+
             this.Key = key;
             this.Value = value;
         }

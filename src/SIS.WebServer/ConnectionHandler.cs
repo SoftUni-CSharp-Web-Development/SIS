@@ -105,7 +105,7 @@ namespace SIS.WebServer
             {
                 httpResponse
                     .AddCookie(new HttpCookie(HttpSessionStorage.SessionCookieKey
-                        , $"{sessionId};HttpOnly=true"));
+                        , $"{sessionId}; HttpOnly"));
             }
         }
 

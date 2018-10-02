@@ -49,20 +49,24 @@ namespace SIS.HTTP.Responses
 
         public override string ToString()
         {
-            StringBuilder result = new StringBuilder();
-
-            result
-                .Append($"{GlobalConstants.HttpOneProtocolFragment} {this.StatusCode.GetResponseLine()}").Append(GlobalConstants.HttpNewLine)
-                .Append(this.Headers).Append(GlobalConstants.HttpNewLine);
+            var response = new StringBuilder();
+           
+            response.AppendLine($"{GlobalConstants.HttpOneProtocolFragment} {this.StatusCode.GetResponseLine()}")
+                .AppendLine(this.Headres.ToString());
 
             if (this.Cookies.HasCookies())
             {
-                result.Append($"Set-Cookie: {this.Cookies}").Append(GlobalConstants.HttpNewLine);
+                var cookiesKeyValuePairs = this.Cookies.ToString().Split(", ");
+
+                foreach (var cookie in cookiesKeyValuePairs)
+                {
+                    response.AppendLine($"{GlobalConstants.CookieResponseHeaderName}: {cookie}"); 
+                }
             }
 
-            result.Append(GlobalConstants.HttpNewLine);
+            response.AppendLine();
 
-            return result.ToString();
+            return response.ToString();
         }
     }
 }

@@ -13,5 +13,7 @@ namespace SIS.HTTP.Cookies
         HttpCookie GetCookie(string key);
 
         bool HasCookies();
+		
+		bool IfCookieIsNew(string key, string value);
     }
 }

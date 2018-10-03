@@ -116,7 +116,7 @@ namespace SIS.HTTP.Requests
 
             foreach (var splitCookie in splitCookies)
             {
-                string[] cookieParts = splitCookie.Split(HttpRequestCookieNameValueSeparator, StringSplitOptions.RemoveEmptyEntries);
+                string[] cookieParts = splitCookie.Split(HttpRequestCookieNameValueSeparator, 2, StringSplitOptions.RemoveEmptyEntries);
 
                 if (cookieParts.Length != 2) continue;
 
@@ -136,6 +136,11 @@ namespace SIS.HTTP.Requests
 
             string queryString = this.Url
                 .Split(new [] {'?', '#'}, StringSplitOptions.None)[1];
+
+            if (string.IsNullOrWhiteSpace(queryString))
+            {
+                return;
+            }
 
             string[] queryParameters = queryString.Split('&');
 

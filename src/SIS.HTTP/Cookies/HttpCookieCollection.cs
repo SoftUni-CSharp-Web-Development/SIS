@@ -1,4 +1,7 @@
-﻿namespace SIS.HTTP.Cookies
+﻿using System.Collections;
+using System.Net;
+
+namespace SIS.HTTP.Cookies
 {
     using System.Collections.Generic;
     using Common;
@@ -37,9 +40,22 @@
             return this.cookies.Count > 0;
         }
 
+        public IEnumerator<HttpCookie> GetEnumerator()
+        {
+            foreach (var cookie in this.cookies)
+            {
+                yield return cookie.Value;
+            }
+        }
+
         public override string ToString()
         {
             return string.Join(HttpCookieStringSeparator, this.cookies.Values);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

@@ -3,11 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2003
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SIS.WebServer", "SIS.WebServer\SIS.WebServer.csproj", "{9069BFBB-817C-4FA4-A980-E20E9DD7A469}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SIS.WebServer", "SIS.WebServer\SIS.WebServer.csproj", "{9069BFBB-817C-4FA4-A980-E20E9DD7A469}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SIS.HTTP", "SIS.HTTP\SIS.HTTP.csproj", "{9C8ADFD1-16AE-4365-A160-A1C6091A0509}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SIS.HTTP", "SIS.HTTP\SIS.HTTP.csproj", "{9C8ADFD1-16AE-4365-A160-A1C6091A0509}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SIS.Demo", "SIS.Demo\SIS.Demo.csproj", "{DE45BDD7-7D46-4DF9-8A5A-E0E3F25918DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SIS.Demo", "SIS.Demo\SIS.Demo.csproj", "{DE45BDD7-7D46-4DF9-8A5A-E0E3F25918DF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Apps", "Apps", "{18A044AE-91C4-48B0-AD7A-BCAC2FB995F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CakesWebApp", "Apps\CakesWebApp\CakesWebApp.csproj", "{4181F3D8-1C3F-48E7-8D29-1A97C15B225E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,9 +31,16 @@ Global
 		{DE45BDD7-7D46-4DF9-8A5A-E0E3F25918DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE45BDD7-7D46-4DF9-8A5A-E0E3F25918DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE45BDD7-7D46-4DF9-8A5A-E0E3F25918DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4181F3D8-1C3F-48E7-8D29-1A97C15B225E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4181F3D8-1C3F-48E7-8D29-1A97C15B225E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4181F3D8-1C3F-48E7-8D29-1A97C15B225E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4181F3D8-1C3F-48E7-8D29-1A97C15B225E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4181F3D8-1C3F-48E7-8D29-1A97C15B225E} = {18A044AE-91C4-48B0-AD7A-BCAC2FB995F6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7DDABD09-DCFC-4DD2-996C-EDD241D1D1F0}

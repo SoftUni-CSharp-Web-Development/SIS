@@ -29,11 +29,26 @@ namespace SIS.HTTP.Cookies
 
         public string Value { get; }
 
-        public DateTime Expires { get; }
+        public DateTime Expires { get; private set; }
 
         public bool IsNew { get; }
 
+        public bool HttpOnly { get; set; } = true;
+
+        public void Delete()
+        {
+            this.Expires = DateTime.UtcNow.AddDays(-1);
+        }
+
         public override string ToString()
-            => $"{this.Key}={this.Value}; Expires={this.Expires.ToLongTimeString()}";
+        {
+            var str = $"{this.Key}={this.Value}; Expires={this.Expires:R}";
+            if (this.HttpOnly)
+            {
+                str += "; HttpOnly";
+            }
+
+            return str;
+        }
     }
 }

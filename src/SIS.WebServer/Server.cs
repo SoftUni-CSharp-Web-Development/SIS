@@ -31,7 +31,7 @@ namespace SIS.WebServer
             this.listener.Start();
             this.isRunning = true;
 
-            Console.WriteLine($"Server started at http//{LocalhostIpAddress}:{this.port}");
+            Console.WriteLine($"Server started at http://{LocalhostIpAddress}:{this.port}");
             while (isRunning)
             {
                 Console.WriteLine("Waiting for client...");

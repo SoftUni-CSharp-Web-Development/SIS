@@ -59,7 +59,7 @@ namespace SIS.MvcFramework
         protected IHttpResponse Redirect(string location)
         {
             this.Response.Headers.Add(new HttpHeader(HttpHeader.Location, location));
-            this.Response.StatusCode = HttpResponseStatusCode.Redirect;
+            this.Response.StatusCode = HttpResponseStatusCode.SeeOther; // TODO: Found better?
             return this.Response;
         }
 

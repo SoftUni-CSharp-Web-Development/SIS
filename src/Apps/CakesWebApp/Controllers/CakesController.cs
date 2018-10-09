@@ -6,7 +6,6 @@ using CakesWebApp.Extensions;
 using CakesWebApp.Models;
 using SIS.HTTP.Requests;
 using SIS.HTTP.Responses;
-using SIS.WebServer.Results;
 
 namespace CakesWebApp.Controllers
 {
@@ -44,7 +43,7 @@ namespace CakesWebApp.Controllers
             }
 
             // Redirect
-            return new RedirectResult("/");
+            return this.Redirect("/");
         }
 
         public IHttpResponse ById()

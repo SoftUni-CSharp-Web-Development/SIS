@@ -4,6 +4,8 @@ using System.Text;
 using System.Threading.Tasks;
 using SIS.HTTP.Cookies;
 using SIS.HTTP.Enums;
+using SIS.WebServer.Results;
+
 namespace SIS.WebServer
 {
     using HTTP.Common;
@@ -11,7 +13,6 @@ namespace SIS.WebServer
     using HTTP.Requests;
     using HTTP.Responses;
     using HTTP.Sessions;
-    using Results;
     using Routing;
 
     public class ConnectionHandler

@@ -13,6 +13,7 @@ namespace SIS.HTTP.Extensions
             {
                 case 200: return "200 OK";
                 case 201: return "201 Created";
+                case 301: return "301 Redirect";
                 case 302: return "302 Found";
                 case 303: return "303 See Other";
                 case 400: return "400 Bad Request";

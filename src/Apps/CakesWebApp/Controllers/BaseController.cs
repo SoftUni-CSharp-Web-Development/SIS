@@ -8,7 +8,6 @@ using SIS.HTTP.Requests;
 using SIS.HTTP.Responses;
 using SIS.MvcFramework;
 using SIS.MvcFramework.Services;
-using SIS.WebServer.Results;
 
 namespace CakesWebApp.Controllers
 {

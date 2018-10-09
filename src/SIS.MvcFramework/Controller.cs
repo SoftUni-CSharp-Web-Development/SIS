@@ -8,9 +8,9 @@ using SIS.MvcFramework.Services;
 
 namespace SIS.MvcFramework
 {
-    public class Controller
+    public abstract class Controller
     {
-        public Controller()
+        protected Controller()
         {
             this.UserCookieService = new UserCookieService();
             this.Response = new HttpResponse {StatusCode = HttpResponseStatusCode.Ok};
@@ -20,22 +20,24 @@ namespace SIS.MvcFramework
 
         public IHttpResponse Response { get; set; }
 
-        protected IUserCookieService UserCookieService { get; }
-
-        protected string GetUsername()
+        protected string User
         {
-            if (!this.Request.Cookies.ContainsCookie(".auth-cakes"))
+            get
             {
-                return null;
+                if (!this.Request.Cookies.ContainsCookie(".auth-cakes"))
+                {
+                    return null;
+                }
+
+                var cookie = this.Request.Cookies.GetCookie(".auth-cakes");
+                var cookieContent = cookie.Value;
+                var userName = this.UserCookieService.GetUserData(cookieContent);
+                return userName;
             }
-
-            var cookie = this.Request.Cookies.GetCookie(".auth-cakes");
-            var cookieContent = cookie.Value;
-            var userName = this.UserCookieService.GetUserData(cookieContent);
-            return userName;
-
         }
 
+        protected IUserCookieService UserCookieService { get; }
+        
         protected IHttpResponse View(string viewName, IDictionary<string, string> viewBag = null)
         {
             if (viewBag == null)

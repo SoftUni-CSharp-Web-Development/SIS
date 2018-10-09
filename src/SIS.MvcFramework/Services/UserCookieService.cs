@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace CakesWebApp.Services
+namespace SIS.MvcFramework.Services
 {
     public class UserCookieService : IUserCookieService
     {
@@ -84,12 +83,5 @@ namespace CakesWebApp.Services
                 }
             }
         }
-    }
-
-    public interface IUserCookieService
-    {
-        string GetUserCookie(string userName);
-
-        string GetUserData(string cookieContent);
     }
 }

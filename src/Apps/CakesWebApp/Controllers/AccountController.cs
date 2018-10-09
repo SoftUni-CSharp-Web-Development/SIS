@@ -7,8 +7,8 @@ using SIS.HTTP.Responses;
 using SIS.WebServer.Results;
 using System.Linq;
 using CakesWebApp.Models;
-using CakesWebApp.Services;
 using SIS.HTTP.Cookies;
+using SIS.MvcFramework.Services;
 
 namespace CakesWebApp.Controllers
 {
@@ -21,16 +21,16 @@ namespace CakesWebApp.Controllers
             this.hashService = new HashService();
         }
 
-        public IHttpResponse Register(IHttpRequest request)
+        public IHttpResponse Register()
         {
             return this.View("Register");
         }
 
-        public IHttpResponse DoRegister(IHttpRequest request)
+        public IHttpResponse DoRegister()
         {
-            var userName = request.FormData["username"].ToString().Trim();
-            var password = request.FormData["password"].ToString();
-            var confirmPassword = request.FormData["confirmPassword"].ToString();
+            var userName = this.Request.FormData["username"].ToString().Trim();
+            var password = this.Request.FormData["password"].ToString();
+            var confirmPassword = this.Request.FormData["confirmPassword"].ToString();
 
             // Validate
             if (string.IsNullOrWhiteSpace(userName) || userName.Length < 4)
@@ -81,15 +81,15 @@ namespace CakesWebApp.Controllers
             return new RedirectResult("/");
         }
 
-        public IHttpResponse Login(IHttpRequest request)
+        public IHttpResponse Login()
         {
             return this.View("Login");
         }
 
-        public IHttpResponse DoLogin(IHttpRequest request)
+        public IHttpResponse DoLogin()
         {
-            var userName = request.FormData["username"].ToString().Trim();
-            var password = request.FormData["password"].ToString();
+            var userName = this.Request.FormData["username"].ToString().Trim();
+            var password = this.Request.FormData["password"].ToString();
 
             var hashedPassword = this.hashService.Hash(password);
 
@@ -110,14 +110,14 @@ namespace CakesWebApp.Controllers
             return response;
         }
 
-        public IHttpResponse Logout(IHttpRequest request)
+        public IHttpResponse Logout()
         {
-            if (!request.Cookies.ContainsCookie(".auth-cakes"))
+            if (!this.Request.Cookies.ContainsCookie(".auth-cakes"))
             {
                 return new RedirectResult("/");
             }
 
-            var cookie = request.Cookies.GetCookie(".auth-cakes");
+            var cookie = this.Request.Cookies.GetCookie(".auth-cakes");
             cookie.Delete();
             var response = new RedirectResult("/");
             response.Cookies.Add(cookie);

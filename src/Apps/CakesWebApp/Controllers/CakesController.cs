@@ -4,7 +4,6 @@ using System.Globalization;
 using System.Linq;
 using CakesWebApp.Extensions;
 using CakesWebApp.Models;
-using CakesWebApp.Services;
 using SIS.HTTP.Requests;
 using SIS.HTTP.Responses;
 using SIS.WebServer.Results;
@@ -13,16 +12,16 @@ namespace CakesWebApp.Controllers
 {
     public class CakesController : BaseController
     {
-        public IHttpResponse AddCakes(IHttpRequest request)
+        public IHttpResponse AddCakes()
         {
             return this.View("AddCakes");
         }
 
-        public IHttpResponse DoAddCakes(IHttpRequest request)
+        public IHttpResponse DoAddCakes()
         {
-            var name = request.FormData["name"].ToString().Trim().UrlDecode();
-            var price = decimal.Parse(request.FormData["price"].ToString().UrlDecode());
-            var picture = request.FormData["picture"].ToString().Trim().UrlDecode();
+            var name = this.Request.FormData["name"].ToString().Trim().UrlDecode();
+            var price = decimal.Parse(this.Request.FormData["price"].ToString().UrlDecode());
+            var picture = this.Request.FormData["picture"].ToString().Trim().UrlDecode();
 
             // TODO: Validation
 
@@ -48,9 +47,9 @@ namespace CakesWebApp.Controllers
             return new RedirectResult("/");
         }
 
-        public IHttpResponse ById(IHttpRequest request)
+        public IHttpResponse ById()
         {
-            var id = int.Parse(request.QueryData["id"].ToString());
+            var id = int.Parse(this.Request.QueryData["id"].ToString());
             var product = this.Db.Products.FirstOrDefault(x => x.Id == id);
             if (product == null)
             {

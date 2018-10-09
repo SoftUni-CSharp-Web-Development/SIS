@@ -14,26 +14,26 @@ namespace CakesWebApp
 
             // {controller}/{action}/{id}
             serverRoutingTable.Routes[HttpRequestMethod.Get]["/"] = request =>
-                new HomeController().Index(request);
+                new HomeController { Request = request }.Index();
             serverRoutingTable.Routes[HttpRequestMethod.Get]["/register"] = request =>
-                new AccountController().Register(request);
+                new AccountController { Request = request }.Register();
             serverRoutingTable.Routes[HttpRequestMethod.Get]["/login"] = request =>
-                new AccountController().Login(request);
+                new AccountController { Request = request }.Login();
             serverRoutingTable.Routes[HttpRequestMethod.Post]["/register"] = request =>
-                new AccountController().DoRegister(request);
+                new AccountController { Request = request }.DoRegister();
             serverRoutingTable.Routes[HttpRequestMethod.Post]["/login"] = request =>
-                new AccountController().DoLogin(request);
+                new AccountController { Request = request }.DoLogin();
             serverRoutingTable.Routes[HttpRequestMethod.Get]["/hello"] = request =>
-                new HomeController().HelloUser(request);
+                new HomeController { Request = request }.HelloUser();
             serverRoutingTable.Routes[HttpRequestMethod.Get]["/logout"] = request =>
-                new AccountController().Logout(request);
+                new AccountController { Request = request }.Logout();
             serverRoutingTable.Routes[HttpRequestMethod.Get]["/cakes/add"] = request =>
-                new CakesController().AddCakes(request);
+                new CakesController { Request = request }.AddCakes();
             serverRoutingTable.Routes[HttpRequestMethod.Post]["/cakes/add"] = request =>
-                new CakesController().DoAddCakes(request);
+                new CakesController { Request = request }.DoAddCakes();
             // cakes/view?id=1
             serverRoutingTable.Routes[HttpRequestMethod.Get]["/cakes/view"] = request =>
-                new CakesController().ById(request);
+                new CakesController { Request = request }.ById();
 
             Server server = new Server(80, serverRoutingTable);
 

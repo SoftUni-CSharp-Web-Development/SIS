@@ -169,10 +169,14 @@ namespace SIS.WebServer
                     string sessionId = this.SetRequestSession(httpRequest);
 
                     var httpResponse = this.HandleRequest(httpRequest);
-
+					
+					
+                if (!httpRequest.Cookies.IfCookieIsNew(HttpSessionStorage.SessionCookieKey, sessionId))
+                {
                     this.SetResponseSession(httpResponse, sessionId);
+                }
 
-                    await this.PrepareResponse(httpResponse);
+                await this.PrepareResponse(httpResponse);
                 }
             }
             catch (BadRequestException e)

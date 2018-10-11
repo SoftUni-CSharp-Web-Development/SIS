@@ -13,7 +13,7 @@ namespace SIS.Framework.Utilities
         public static string GetViewFullyQualifiedName(
             string controllerName,
             string viewName) =>
-            string.Format("{0}//{1}//{2}",
+            string.Format("../../../{0}/{1}/{2}.html",
                 MvcContext.Get.ViewsFolder,
                 controllerName,
                 viewName);

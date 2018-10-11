@@ -24,6 +24,10 @@ namespace IRunesWebApp.Controllers
 
         private const string HtmlFileExtension = ".html";
 
+        private const string LayoutViewFileName = "_Layout";
+
+        private const string RenderBodyConstant = "@RenderBody()";
+
         protected IRunesContext Context { get; set; }
 
         private readonly UserCookieService cookieService;
@@ -57,6 +61,12 @@ namespace IRunesWebApp.Controllers
 
         protected IHttpResponse View([CallerMemberName] string viewName = "")
         {
+            var layoutView = RootDirectoryRelativePath +
+                ViewsFolderName +
+                DirectorySeparator +
+                LayoutViewFileName + 
+                HtmlFileExtension;
+
             string filePath = RootDirectoryRelativePath +
                 ViewsFolderName +
                 DirectorySeparator +
@@ -72,22 +82,33 @@ namespace IRunesWebApp.Controllers
                     HttpResponseStatusCode.NotFound);
             }
 
-            var fileContent = File.ReadAllText(filePath);
+            var viewContent = BuildViewContent(filePath);
+
+
+            var viewLayout = File.ReadAllText(layoutView);
+            var view = viewLayout.Replace(RenderBodyConstant, viewContent);
+
+            var response = new HtmlResult(view, HttpResponseStatusCode.Ok);
+
+            return response;
+        }
+
+        private string BuildViewContent(string filePath)
+        {
+            var viewContent = File.ReadAllText(filePath);
 
             foreach (var viewBagKey in ViewBag.Keys)
             {
                 var dynamicDataPlaceholder = $"{{{{{viewBagKey}}}}}";
-                if (fileContent.Contains(dynamicDataPlaceholder))
+                if (viewContent.Contains(dynamicDataPlaceholder))
                 {
-                    fileContent = fileContent.Replace(
+                    viewContent = viewContent.Replace(
                         dynamicDataPlaceholder,
                         this.ViewBag[viewBagKey]);
                 }
             }
 
-            var response = new HtmlResult(fileContent, HttpResponseStatusCode.Ok);
-
-            return response;
+            return viewContent;
         }
     }
 }

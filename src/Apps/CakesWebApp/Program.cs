@@ -27,6 +27,13 @@ namespace CakesWebApp
                 new HomeController().HelloUser(request);
             serverRoutingTable.Routes[HttpRequestMethod.Get]["/logout"] = request =>
                 new AccountController().Logout(request);
+            serverRoutingTable.Routes[HttpRequestMethod.Get]["/cakes/add"] = request =>
+                new CakesController().AddCakes(request);
+            serverRoutingTable.Routes[HttpRequestMethod.Post]["/cakes/add"] = request =>
+                new CakesController().DoAddCakes(request);
+            // cakes/view?id=1
+            serverRoutingTable.Routes[HttpRequestMethod.Get]["/cakes/view"] = request =>
+                new CakesController().ById(request);
 
             Server server = new Server(80, serverRoutingTable);
 

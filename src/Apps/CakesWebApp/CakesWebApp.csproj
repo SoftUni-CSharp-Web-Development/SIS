@@ -17,6 +17,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Views\CakeById.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Views\Error.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Views\AddCakes.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Views\_Layout.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Views\Index.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

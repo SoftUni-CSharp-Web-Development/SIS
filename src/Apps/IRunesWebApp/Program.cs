@@ -1,6 +1,7 @@
 ﻿using IRunesWebApp.Controllers;
 using SIS.HTTP.Enums;
 using SIS.WebServer;
+using SIS.WebServer.Api;
 using SIS.WebServer.Results;
 using SIS.WebServer.Routing;
 
@@ -11,11 +12,12 @@ namespace IRunesWebApp
         static void Main(string[] args)
         {
             ServerRoutingTable serverRoutingTable = new ServerRoutingTable();
+            var handler = new HttpHandler(serverRoutingTable);
 
             ConfigureRouting(serverRoutingTable);
 
 
-            Server server = new Server(80, serverRoutingTable);
+            Server server = new Server(80, handler);
 
             server.Run();
         }

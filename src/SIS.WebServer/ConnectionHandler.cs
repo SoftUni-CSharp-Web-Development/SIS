@@ -113,7 +113,7 @@ namespace SIS.WebServer
         private bool IsResourceRequest(IHttpRequest httpRequest)
         {
             var requestPath = httpRequest.Path;
-            if (requestPath.Contains('.'))
+            if (requestPath.Contains('.') && !requestPath.Contains(".."))
             {
                 var requestPathExtension = requestPath
                     .Substring(requestPath.LastIndexOf('.'));

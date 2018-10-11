@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Net;
 using System.Runtime.CompilerServices;
+
 using IRunesWebApp.Data;
+
 using Services;
+
+using SIS.Framework.Controllers;
 using SIS.HTTP.Cookies;
 using SIS.HTTP.Enums;
 using SIS.HTTP.Requests;
@@ -12,7 +15,7 @@ using SIS.WebServer.Results;
 
 namespace IRunesWebApp.Controllers
 {
-    public abstract class BaseController
+    public abstract class BaseController : Controller
     {       
         private const string RootDirectoryRelativePath = "../../../";
 
@@ -59,7 +62,7 @@ namespace IRunesWebApp.Controllers
         private string GetCurrentControllerName() =>
             this.GetType().Name.Replace(ControllerDefaultName, string.Empty);
 
-        protected IHttpResponse View([CallerMemberName] string viewName = "")
+        protected IHttpResponse ViewMethod([CallerMemberName] string viewName = "")
         {
             var layoutView = RootDirectoryRelativePath +
                 ViewsFolderName +

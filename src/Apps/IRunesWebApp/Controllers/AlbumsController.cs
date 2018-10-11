@@ -36,7 +36,7 @@ namespace IRunesWebApp.Controllers
                 this.ViewBag["albumsList"] = "There are currently no albums.";
             }
 
-            return this.View();
+            return this.ViewMethod();
         } 
     }
 }

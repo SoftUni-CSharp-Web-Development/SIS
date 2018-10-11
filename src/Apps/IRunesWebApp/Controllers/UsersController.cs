@@ -19,8 +19,8 @@ namespace IRunesWebApp.Controllers
             this.hashService = new HashService();
         }
 
-        public IHttpResponse Login(IHttpRequest request) => this.View();
-
+        public IHttpResponse Login(IHttpRequest request) => this.ViewMethod();
+     
         public IHttpResponse PostLogin(IHttpRequest request)
         {
             var username = request.FormData["username"].ToString();
@@ -42,7 +42,7 @@ namespace IRunesWebApp.Controllers
             return response;
         }
 
-        public IHttpResponse Register(IHttpRequest request) => this.View();
+        public IHttpResponse Register(IHttpRequest request) => this.ViewMethod();
 
         public IHttpResponse PostRegister(IHttpRequest request)
         {

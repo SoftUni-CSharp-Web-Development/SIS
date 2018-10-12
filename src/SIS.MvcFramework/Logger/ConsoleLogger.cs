@@ -6,7 +6,7 @@ namespace SIS.MvcFramework.Logger
     {
         public void Log(string message)
         {
-            Console.WriteLine(message);
+            Console.WriteLine($"[{DateTime.UtcNow}] {message}");
         }
     }
 }

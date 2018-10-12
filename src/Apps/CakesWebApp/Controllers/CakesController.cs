@@ -27,11 +27,9 @@ namespace CakesWebApp.Controllers
         }
 
         [HttpPost("/cakes/add")]
-        public IHttpResponse DoAddCakes(DoAddCakesInputModel model, decimal price)
+        public IHttpResponse DoAddCakes(DoAddCakesInputModel model)
         {
             // TODO: Validation
-            this.logger.Log(price.ToString());
-
             var product = new Product
             {
                 Name = model.Name,

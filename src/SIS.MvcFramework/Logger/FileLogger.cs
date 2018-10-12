@@ -18,7 +18,7 @@ namespace SIS.MvcFramework.Logger
         {
             lock (LockObject)
             {
-                File.AppendAllText(this.fileName, message + Environment.NewLine);
+                File.AppendAllText(this.fileName, $"[{DateTime.UtcNow}] {message}{Environment.NewLine}");
             }
         }
     }

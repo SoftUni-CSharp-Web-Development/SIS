@@ -15,19 +15,19 @@ namespace SIS.MvcFramework.Services
 
         public void AddService<TSource, TDestination>()
         {
-            dependencyContainer[typeof(TSource)] = typeof(TDestination);
+            this.dependencyContainer[typeof(TSource)] = typeof(TDestination);
         }
 
         public T CreateInstance<T>()
         {
-            return (T)CreateInstance(typeof(T));
+            return (T) this.CreateInstance(typeof(T));
         }
 
         public object CreateInstance(Type type)
         {
-            if (dependencyContainer.ContainsKey(type))
+            if (this.dependencyContainer.ContainsKey(type))
             {
-                type = dependencyContainer[type];
+                type = this.dependencyContainer[type];
             }
 
             if (type.IsInterface || type.IsAbstract)
@@ -36,7 +36,7 @@ namespace SIS.MvcFramework.Services
             }
 
             // TODO: if empty -> use it 
-            var constructor = type.GetConstructors().First();
+            var constructor = type.GetConstructors().OrderBy(x => x.GetParameters().Length).First();
             var constructorParameters = constructor.GetParameters();
             var constructorParameterObjects = new List<object>();
             foreach (var constructorParameter in constructorParameters)

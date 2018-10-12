@@ -1,6 +1,8 @@
 using System;
+using System.Globalization;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 using System.Threading.Tasks;
 using SIS.WebServer.Routing;
 
@@ -44,6 +46,7 @@ namespace SIS.WebServer
 
         public async void Listen(Socket client)
         {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             var connectionHandler = new ConnectionHandler(client, this.serverRoutingTable);
             await connectionHandler.ProcessRequestAsync();
         }

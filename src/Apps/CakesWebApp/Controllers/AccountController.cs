@@ -6,6 +6,7 @@ using SIS.HTTP.Requests;
 using SIS.HTTP.Responses;
 using System.Linq;
 using CakesWebApp.Models;
+using CakesWebApp.ViewModels.Account;
 using SIS.HTTP.Cookies;
 using SIS.MvcFramework;
 using SIS.MvcFramework.Services;
@@ -28,41 +29,37 @@ namespace CakesWebApp.Controllers
         }
 
         [HttpPost("/register")]
-        public IHttpResponse DoRegister()
+        public IHttpResponse DoRegister(DoRegisterInputModel model)
         {
-            var userName = this.Request.FormData["username"].ToString().Trim();
-            var password = this.Request.FormData["password"].ToString();
-            var confirmPassword = this.Request.FormData["confirmPassword"].ToString();
-
             // Validate
-            if (string.IsNullOrWhiteSpace(userName) || userName.Length < 4)
+            if (string.IsNullOrWhiteSpace(model.Username) || model.Username.Trim().Length < 4)
             {
                 return this.BadRequestError("Please provide valid username with length of 4 or more characters.");
             }
 
-            if (this.Db.Users.Any(x => x.Username == userName))
+            if (this.Db.Users.Any(x => x.Username == model.Username.Trim()))
             {
                 return this.BadRequestError("User with the same name already exists.");
             }
 
-            if (string.IsNullOrWhiteSpace(password) || password.Length < 6)
+            if (string.IsNullOrWhiteSpace(model.Password) || model.Password.Length < 6)
             {
                 return this.BadRequestError("Please provide password of length 6 or more.");
             }
 
-            if (password != confirmPassword)
+            if (model.Password != model.ConfirmPassword)
             {
                 return this.BadRequestError("Passwords do not match.");
             }
 
             // Hash password
-            var hashedPassword = this.hashService.Hash(password);
+            var hashedPassword = this.hashService.Hash(model.Password);
 
             // Create user
             var user = new User
             {
-                Name = userName,
-                Username = userName,
+                Name = model.Username.Trim(),
+                Username = model.Username.Trim(),
                 Password = hashedPassword,
             };
             this.Db.Users.Add(user);

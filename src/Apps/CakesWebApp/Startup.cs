@@ -19,6 +19,13 @@ namespace CakesWebApp
             collection.AddService<IHashService, HashService>();
             collection.AddService<IUserCookieService, UserCookieService>();
             collection.AddService<ILogger, FileLogger>();
+
+            /*
+             * In ASP.NET Core
+            collection.AddTransient<IUserCookieService, UserCookieService>();
+            collection.AddScoped<IUserCookieService, UserCookieService>();
+            collection.AddSingleton<IUserCookieService, UserCookieService>();
+             */
         }
     }
 }

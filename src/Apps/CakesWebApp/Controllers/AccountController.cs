@@ -87,15 +87,12 @@ namespace CakesWebApp.Controllers
         }
 
         [HttpPost("/login")]
-        public IHttpResponse DoLogin()
+        public IHttpResponse DoLogin(DoLoginInputModel model)
         {
-            var userName = this.Request.FormData["username"].ToString().Trim();
-            var password = this.Request.FormData["password"].ToString();
-
-            var hashedPassword = this.hashService.Hash(password);
+            var hashedPassword = this.hashService.Hash(model.Password);
 
             var user = this.Db.Users.FirstOrDefault(x => 
-                x.Username == userName &&
+                x.Username == model.Username.Trim() &&
                 x.Password == hashedPassword);
 
             if (user == null)

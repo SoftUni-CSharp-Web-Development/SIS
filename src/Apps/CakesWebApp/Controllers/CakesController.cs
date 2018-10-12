@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using CakesWebApp.Extensions;
 using CakesWebApp.Models;
+using CakesWebApp.ViewModels.Cakes;
 using SIS.HTTP.Requests;
 using SIS.HTTP.Responses;
 using SIS.MvcFramework;
@@ -19,19 +20,15 @@ namespace CakesWebApp.Controllers
         }
 
         [HttpPost("/cakes/add")]
-        public IHttpResponse DoAddCakes()
+        public IHttpResponse DoAddCakes(DoAddCakesInputModel model)
         {
-            var name = this.Request.FormData["name"].ToString().Trim().UrlDecode();
-            var price = decimal.Parse(this.Request.FormData["price"].ToString().UrlDecode());
-            var picture = this.Request.FormData["picture"].ToString().Trim().UrlDecode();
-
             // TODO: Validation
 
             var product = new Product
             {
-                Name = name,
-                Price = price,
-                ImageUrl = picture
+                Name = model.Name,
+                Price = model.Price.ToDecimal(),
+                ImageUrl = model.Picture,
             };
             this.Db.Products.Add(product);
 
@@ -60,6 +57,7 @@ namespace CakesWebApp.Controllers
                 return this.BadRequestError("Cake not found.");
             }
 
+            // TODO: to view model
             var viewBag = new Dictionary<string, string>
             {
                 {"Name", product.Name},

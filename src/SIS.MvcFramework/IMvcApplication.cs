@@ -1,4 +1,5 @@
-﻿using SIS.WebServer.Routing;
+﻿using SIS.MvcFramework.Services;
+using SIS.WebServer.Routing;
 
 namespace SIS.MvcFramework
 {
@@ -6,6 +7,6 @@ namespace SIS.MvcFramework
     {
         void Configure();
 
-        void ConfigureServices();
+        void ConfigureServices(IServiceCollection collection);
     }
 }

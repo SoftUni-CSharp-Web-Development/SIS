@@ -2,11 +2,19 @@
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using SIS.MvcFramework.Logger;
 
 namespace SIS.MvcFramework.Services
 {
     public class UserCookieService : IUserCookieService
     {
+        private readonly ILogger logger;
+
+        public UserCookieService(ILogger logger)
+        {
+            this.logger = logger;
+        }
+
         public const string EncryptKey = "E646C8DF278CD5931069B522E695D4F2";
 
         public string GetUserCookie(string userName)
@@ -17,6 +25,7 @@ namespace SIS.MvcFramework.Services
 
         public string GetUserData(string cookieContent)
         {
+            this.logger.Log("GetUserData()" + cookieContent);
             var username = DecryptString(cookieContent, EncryptKey);
             return username;
         }

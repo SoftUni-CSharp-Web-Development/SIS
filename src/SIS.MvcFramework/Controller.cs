@@ -12,13 +12,14 @@ namespace SIS.MvcFramework
     {
         protected Controller()
         {
-            this.UserCookieService = new UserCookieService();
             this.Response = new HttpResponse {StatusCode = HttpResponseStatusCode.Ok};
         }
 
         public IHttpRequest Request { get; set; }
 
         public IHttpResponse Response { get; set; }
+
+        public IUserCookieService UserCookieService { get; internal set; }
 
         protected string User
         {
@@ -35,8 +36,6 @@ namespace SIS.MvcFramework
                 return userName;
             }
         }
-
-        protected IUserCookieService UserCookieService { get; }
         
         protected IHttpResponse View(string viewName, IDictionary<string, string> viewBag = null)
         {

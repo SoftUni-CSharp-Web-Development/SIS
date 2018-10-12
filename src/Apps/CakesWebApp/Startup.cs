@@ -1,6 +1,9 @@
-﻿using CakesWebApp.Controllers;
+﻿using System;
+using CakesWebApp.Controllers;
 using SIS.HTTP.Enums;
 using SIS.MvcFramework;
+using SIS.MvcFramework.Logger;
+using SIS.MvcFramework.Services;
 using SIS.WebServer.Routing;
 
 namespace CakesWebApp
@@ -11,9 +14,11 @@ namespace CakesWebApp
         {
         }
 
-        public void ConfigureServices()
+        public void ConfigureServices(IServiceCollection collection)
         {
-            // TODO: Implement IoC/DI container
+            collection.AddService<IHashService, HashService>();
+            collection.AddService<IUserCookieService, UserCookieService>();
+            collection.AddService<ILogger, FileLogger>();
         }
     }
 }

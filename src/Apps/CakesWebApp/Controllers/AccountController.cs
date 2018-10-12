@@ -14,11 +14,11 @@ namespace CakesWebApp.Controllers
 {
     public class AccountController : BaseController
     {
-        private IHashService hashService;
+        private readonly IHashService hashService;
 
-        public AccountController()
+        public AccountController(IHashService hashService)
         {
-            this.hashService = new HashService();
+            this.hashService = hashService;
         }
 
         [HttpGet("/register")]

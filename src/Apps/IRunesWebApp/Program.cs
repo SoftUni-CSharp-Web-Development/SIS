@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+﻿
 using IRunesWebApp.Controllers;
 using SIS.Framework;
 using SIS.Framework.Routers;
@@ -14,16 +14,11 @@ namespace IRunesWebApp
     {
         static void Main(string[] args)
         {
-            ServerRoutingTable serverRoutingTable = new ServerRoutingTable();
             var handler = new ControllerRouter();
-            MvcContext.Get.AssemblyName = Assembly.GetExecutingAssembly().GetName().Name;
-
-            ConfigureRouting(serverRoutingTable);
-
-
             Server server = new Server(80, handler);
-
-            server.Run();
+            var engine = new MvcEngine();
+            engine.Run(server);
+            //MvcEngine.Run(server);
         }
 
         private static void ConfigureRouting(ServerRoutingTable serverRoutingTable)
@@ -33,8 +28,8 @@ namespace IRunesWebApp
                 request => new RedirectResult("/");
             //serverRoutingTable.Routes[HttpRequestMethod.Get]["/"] =
             //    request => new HomeController().Index(request);
-            serverRoutingTable.Routes[HttpRequestMethod.Get]["/users/login"] =
-                request => new UsersController().Login(request);
+            //serverRoutingTable.Routes[HttpRequestMethod.Get]["/users/login"] =
+            //    request => new UsersController().Login(request);
             serverRoutingTable.Routes[HttpRequestMethod.Get]["/users/register"] =
                 request => new UsersController().Register(request);
             serverRoutingTable.Routes[HttpRequestMethod.Get]["/albums/all"] =

@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using System.Security.Principal;
 using SIS.Framework.ActionsResults;
 using SIS.Framework.ActionsResults.Contracts;
 using SIS.Framework.Models;
@@ -14,6 +15,8 @@ namespace SIS.Framework.Controllers
         {
             this.ViewModel = new ViewModel();
         }
+
+        public Model ModelState { get; } = new Model();
 
         public IHttpRequest Request { get; set; }
 

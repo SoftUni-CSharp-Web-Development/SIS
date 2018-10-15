@@ -10,14 +10,6 @@ namespace IRunesWebApp.Controllers
     {        
         public IActionResult Index()
         {
-            //if (this.IsAuthenticated(request))  
-            //{
-            //    var username = request.Session.GetParameter("username");
-            //    this.ViewBag["username"] = username.ToString();
-
-            //    return this.View("IndexLoggedIn");
-            //}
-
             return this.View();
         }
     }

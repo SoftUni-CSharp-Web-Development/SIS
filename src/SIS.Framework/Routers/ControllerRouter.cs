@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using SIS.Framework.ActionsResults.Base;
@@ -51,9 +52,12 @@ namespace SIS.Framework.Routers
                 throw new NullReferenceException();
             }
 
-            return this.PrepareResponse(controller, action, request);
-        }
+            object[] actionParameters = this.MapActionParameters(action, request, controller);
 
+            var actionResult = InvokeAction(controller, action, actionParameters);
+
+            return this.PrepareResponse(actionResult);
+        }
 
         private Controller GetController(string controllerName, IHttpRequest request)
         {
@@ -128,15 +132,8 @@ namespace SIS.Framework.Routers
                 .Where(mi => mi.Name.ToLower() == actionName.ToLower());
         }
 
-
-        private IHttpResponse PrepareResponse(
-            Controller controller,
-            MethodInfo action,
-            IHttpRequest request)
-        {
-            object[] actionParameters = this.MapActionParameters(action, request);
-
-            IActionResult actionResult = (IActionResult)action.Invoke(controller, actionParameters);
+        private IHttpResponse PrepareResponse(IActionResult actionResult)
+        {          
             string invokationResult = actionResult.Invoke();
 
             if (actionResult is IViewable)
@@ -152,17 +149,29 @@ namespace SIS.Framework.Routers
             throw new InvalidOperationException("Type of result is not supported");
         }
 
-        private object[] MapActionParameters(MethodInfo action, IHttpRequest request)
+        private static IActionResult InvokeAction(
+            Controller controller,
+            MethodInfo action,
+            object[] actionParameters)
+        {
+            return (IActionResult)action.Invoke(controller, actionParameters);
+        }
+
+        private object[] MapActionParameters(
+            MethodInfo action,
+            IHttpRequest request,
+            Controller controller)
         {
             var actionParameteres = action.GetParameters();
             object[] mappedActionParameters = new object[actionParameteres.Length];
             for (int i = 0; i < actionParameteres.Length; i++)
             {
                 var actionParameter = actionParameteres[i];
-                var mappedActionParameter = new object();
+
                 if (actionParameter.ParameterType.IsPrimitive ||
                     actionParameter.ParameterType == typeof(string))
                 {
+                    var mappedActionParameter = new object();
                     mappedActionParameter = this.ProcessPrimitiveParameter(actionParameter, request);
                     if (mappedActionParameter == null)
                     {
@@ -171,18 +180,44 @@ namespace SIS.Framework.Routers
                 }
                 else
                 {
-                    mappedActionParameter = this.ProcessesBindingModelParameter(actionParameter, request);
-                    if (mappedActionParameter == null)
-                    {
-                        break;
-                    }
+                    var bindingModel = this.ProcessesBindingModelParameter(actionParameter, request);
+                    controller.ModelState.IsValid = this.IsValid(
+                        bindingModel,
+                        actionParameter.ParameterType);
+                    mappedActionParameters[i] = bindingModel;
                 }
-                mappedActionParameters[i] = mappedActionParameter;
+                
             }
 
             return mappedActionParameters;
 
 
+        }
+
+        private bool? IsValid(object bindingModel, Type bindingModelType)
+        {
+            var properties = bindingModelType.GetProperties();
+
+            foreach (var property in properties)
+            { 
+                var propertyValidationAttributes = property
+                    .GetCustomAttributes()
+                    .Where(ca => ca is ValidationAttribute)
+                    .Cast<ValidationAttribute>()
+                    .ToList();
+
+                foreach (var validationAttribute in propertyValidationAttributes)
+                {
+                    var propertyValue = property.GetValue(bindingModel);
+
+                    if (!validationAttribute.IsValid(propertyValue))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
         }
 
         private object ProcessPrimitiveParameter(

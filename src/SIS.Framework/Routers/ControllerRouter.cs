@@ -54,122 +54,24 @@ namespace SIS.Framework.Routers
             return this.PrepareResponse(controller, action, request);
         }
 
-        private IHttpResponse PrepareResponse(
-            Controller controller,
-            MethodInfo action,
-            IHttpRequest request)
+
+        private Controller GetController(string controllerName, IHttpRequest request)
         {
-            object[] actionParameters = this.MapActionParameters(action, request);
-
-            IActionResult actionResult = (IActionResult)action.Invoke(controller, actionParameters);
-            string invokationResult = actionResult.Invoke();
-
-            if (actionResult is IViewable)
+            if (string.IsNullOrWhiteSpace(controllerName))
             {
-                return new HtmlResult(invokationResult, HttpResponseStatusCode.Ok);
+                return null;
             }
 
-            if (actionResult is IRedirectable)
-            {
-                return new RedirectResult(invokationResult);
-            }
+            var fullyQualifiedControllerName = string.Format("{0}.{1}.{2}{3}, {0}",
+                MvcContext.Get.AssemblyName,
+                MvcContext.Get.ControllersFolder,
+                controllerName,
+                MvcContext.Get.ControllerSuffix);
 
-            throw new InvalidOperationException("Type of result is not supported");
+            var controllerType = Type.GetType(fullyQualifiedControllerName);
+            var controller = (Controller)Activator.CreateInstance(controllerType);
+            return controller;
         }
-
-        private object[] MapActionParameters(MethodInfo action, IHttpRequest request)
-        {
-            var actionParameteres = action.GetParameters();
-            object[] mappedActionParameters = new object[actionParameteres.Length];
-            for (int i = 0; i < actionParameteres.Length; i++)
-            {
-                var actionParameter = actionParameteres[i];
-                var mappedActionParameter = new object();
-                if (actionParameter.ParameterType.IsPrimitive ||
-                    actionParameter.ParameterType == typeof(string))
-                {
-                    mappedActionParameter = this.ProcessPrimitiveParameter(actionParameter, request);
-                    if (mappedActionParameter == null)
-                    {
-                        break;
-                    }
-                }
-                else
-                {
-                    mappedActionParameter = this.ProcessesBindingModelParameter(actionParameter, request);
-                    if (mappedActionParameter == null)
-                    {
-                        break;
-                    }
-                }
-                mappedActionParameters[i] = mappedActionParameter;
-            }
-
-            return mappedActionParameters;
-
-
-        }
-
-        private object ProcessesBindingModelParameter(
-            ParameterInfo actionParameter,
-            IHttpRequest request)
-        {
-            var bindingModelType = actionParameter.ParameterType;
-
-            var bindingModelInstance = Activator.CreateInstance(bindingModelType);
-
-            var bindingModelProperties = bindingModelType.GetProperties();
-
-            foreach (var bindingModelProperty in bindingModelProperties)
-            {
-                try
-                {
-                    var value = this.GetParameterFromRequestData(
-                        request,
-                        bindingModelProperty.Name.ToLower());
-
-                    bindingModelProperty.SetValue(
-                        bindingModelInstance,
-                        Convert.ChangeType(value, bindingModelProperty.PropertyType));
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"The property {bindingModelProperty.Name} could not be mapped");
-                }
-            }
-
-            return Convert.ChangeType(bindingModelInstance, bindingModelType);
-        }
-
-        private object ProcessPrimitiveParameter(
-            ParameterInfo actionParameter,
-            IHttpRequest request)
-        {
-            var value = this.GetParameterFromRequestData(request, actionParameter.Name);
-            if (value == null)
-            {
-                return value;
-            }
-            return Convert.ChangeType(value, actionParameter.ParameterType);
-        }
-
-        private object GetParameterFromRequestData(
-            IHttpRequest request,
-            string actionParameterName)
-        {
-            if (request.QueryData.ContainsKey(actionParameterName))
-            {
-                return request.QueryData[actionParameterName];
-            }
-
-            if (request.FormData.ContainsKey(actionParameterName))
-            {
-                return request.FormData[actionParameterName];
-            }
-
-            return null;
-        }
-
 
         private MethodInfo GetAction(
             string requestMethod,
@@ -226,22 +128,121 @@ namespace SIS.Framework.Routers
                 .Where(mi => mi.Name.ToLower() == actionName.ToLower());
         }
 
-        private Controller GetController(string controllerName, IHttpRequest request)
-        {
-            if (string.IsNullOrWhiteSpace(controllerName))
-            {
-                return null;
-            }
-   
-            var fullyQualifiedControllerName = string.Format("{0}.{1}.{2}{3}, {0}",
-                MvcContext.Get.AssemblyName,
-                MvcContext.Get.ControllersFolder,
-                controllerName,
-                MvcContext.Get.ControllerSuffix);
 
-            var controllerType = Type.GetType(fullyQualifiedControllerName);
-            var controller = (Controller)Activator.CreateInstance(controllerType);
-            return controller;
+        private IHttpResponse PrepareResponse(
+            Controller controller,
+            MethodInfo action,
+            IHttpRequest request)
+        {
+            object[] actionParameters = this.MapActionParameters(action, request);
+
+            IActionResult actionResult = (IActionResult)action.Invoke(controller, actionParameters);
+            string invokationResult = actionResult.Invoke();
+
+            if (actionResult is IViewable)
+            {
+                return new HtmlResult(invokationResult, HttpResponseStatusCode.Ok);
+            }
+
+            if (actionResult is IRedirectable)
+            {
+                return new RedirectResult(invokationResult);
+            }
+
+            throw new InvalidOperationException("Type of result is not supported");
+        }
+
+        private object[] MapActionParameters(MethodInfo action, IHttpRequest request)
+        {
+            var actionParameteres = action.GetParameters();
+            object[] mappedActionParameters = new object[actionParameteres.Length];
+            for (int i = 0; i < actionParameteres.Length; i++)
+            {
+                var actionParameter = actionParameteres[i];
+                var mappedActionParameter = new object();
+                if (actionParameter.ParameterType.IsPrimitive ||
+                    actionParameter.ParameterType == typeof(string))
+                {
+                    mappedActionParameter = this.ProcessPrimitiveParameter(actionParameter, request);
+                    if (mappedActionParameter == null)
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    mappedActionParameter = this.ProcessesBindingModelParameter(actionParameter, request);
+                    if (mappedActionParameter == null)
+                    {
+                        break;
+                    }
+                }
+                mappedActionParameters[i] = mappedActionParameter;
+            }
+
+            return mappedActionParameters;
+
+
+        }
+
+        private object ProcessPrimitiveParameter(
+            ParameterInfo actionParameter,
+            IHttpRequest request)
+        {
+            var value = this.GetParameterFromRequestData(request, actionParameter.Name);
+            if (value == null)
+            {
+                return value;
+            }
+            return Convert.ChangeType(value, actionParameter.ParameterType);
+        }
+
+        private object ProcessesBindingModelParameter(
+            ParameterInfo actionParameter,
+            IHttpRequest request)
+        {
+            var bindingModelType = actionParameter.ParameterType;
+
+            var bindingModelInstance = Activator.CreateInstance(bindingModelType);
+
+            var bindingModelProperties = bindingModelType.GetProperties();
+
+            foreach (var bindingModelProperty in bindingModelProperties)
+            {
+                try
+                {
+                    var value = this.GetParameterFromRequestData(
+                        request,
+                        bindingModelProperty.Name.ToLower());
+
+                    bindingModelProperty.SetValue(
+                        bindingModelInstance,
+                        Convert.ChangeType(value, bindingModelProperty.PropertyType));
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"The property {bindingModelProperty.Name} could not be mapped");
+                }
+            }
+
+            return Convert.ChangeType(bindingModelInstance, bindingModelType);
+        }
+
+        private object GetParameterFromRequestData(
+            IHttpRequest request,
+            string actionParameterName)
+        {
+            if (request.QueryData.ContainsKey(actionParameterName))
+            {
+                return request.QueryData[actionParameterName];
+            }
+
+            if (request.FormData.ContainsKey(actionParameterName))
+            {
+                return request.FormData[actionParameterName];
+            }
+
+            return null;
         }
     }
 }

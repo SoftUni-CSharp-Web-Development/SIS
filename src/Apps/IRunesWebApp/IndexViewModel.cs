@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
+using SIS.Framework.Attributes.Properties;
 
 namespace IRunesWebApp
 {
     public class IndexViewModel
     {
-        public int Id { get; set; }
+        [NumberRange(5,12)]
+        public double Id { get; set; }
 
+        [Regex(@"^[a-zA-Z]+$")]
         public string Username { get; set; }
-
-        public ICollection<string> Roles { get; set; }
     }
 }

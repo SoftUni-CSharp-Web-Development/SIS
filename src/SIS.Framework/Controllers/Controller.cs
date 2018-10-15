@@ -1,6 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using SIS.Framework.ActionsResults;
 using SIS.Framework.ActionsResults.Contracts;
+using SIS.Framework.Models;
 using SIS.Framework.Utilities;
 using SIS.Framework.Views;
 using SIS.HTTP.Requests;
@@ -9,7 +10,14 @@ namespace SIS.Framework.Controllers
 {
     public abstract class Controller
     {
+        protected Controller()
+        {
+            this.ViewModel = new ViewModel();
+        }
+
         public IHttpRequest Request { get; set; }
+
+        public ViewModel ViewModel { get; set; }
 
         protected IViewable View([CallerMemberName] string viewName = "")
         {
@@ -18,7 +26,7 @@ namespace SIS.Framework.Controllers
             var viewFullyQualifiedName = ControllerUtilities
                 .GetViewFullyQualifiedName(controllerName, viewName);
 
-            var view = new View(viewFullyQualifiedName);
+            var view = new View(viewFullyQualifiedName, this.ViewModel.Data);
 
             return new ViewResult(view);
         }

@@ -3,12 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using SIS.Framework.ActionsResults.Base;
+using SIS.Framework.ActionsResults.Contracts;
 using SIS.Framework.Attributes.Methods;
 using SIS.Framework.Attributes.Methods.Base;
 using SIS.Framework.Controllers;
+using SIS.HTTP.Enums;
+using SIS.HTTP.Exceptions;
+using SIS.HTTP.Extensions;
 using SIS.HTTP.Requests;
 using SIS.HTTP.Responses;
 using SIS.WebServer.Api.Contracts;
+using SIS.WebServer.Results;
 
 namespace SIS.Framework.Routers
 {
@@ -20,23 +25,20 @@ namespace SIS.Framework.Routers
             var actionName = string.Empty;
             var requestMethod = request.RequestMethod.ToString();
 
-            if (request.Url == "/")
+            if (request.Path == "/")
             {
                 controllerName = "Home";
                 actionName = "Index";
             }
             else
             {
-                var requestUrlSplit = request.Url.Split(
+                var requestUrlSplit = request.Path.Split(
                     "/",
                     StringSplitOptions.RemoveEmptyEntries);
                 
-                controllerName = requestUrlSplit[0];
-                actionName = requestUrlSplit[1];
+                controllerName = requestUrlSplit[0].Capitalize();
+                actionName = requestUrlSplit[1].Capitalize();
             }
-
-            // var result = new Controller.Action();
-            // handle => result
 
             //Controller
             var controller = this.GetController(controllerName, request);
@@ -49,13 +51,122 @@ namespace SIS.Framework.Routers
                 throw new NullReferenceException();
             }
 
-            return this.PrepareResponse(controller, action);
+            return this.PrepareResponse(controller, action, request);
         }
 
-        private IHttpResponse PrepareResponse(Controller controller, MethodInfo action)
+        private IHttpResponse PrepareResponse(
+            Controller controller,
+            MethodInfo action,
+            IHttpRequest request)
         {
-            IActionResult actionResult = (IActionResult)action.Invoke(controller, null);
-            string invocationType = actionResult.Invoke();
+            object[] actionParameters = this.MapActionParameters(action, request);
+
+            IActionResult actionResult = (IActionResult)action.Invoke(controller, actionParameters);
+            string invokationResult = actionResult.Invoke();
+
+            if (actionResult is IViewable)
+            {
+                return new HtmlResult(invokationResult, HttpResponseStatusCode.Ok);
+            }
+
+            if (actionResult is IRedirectable)
+            {
+                return new RedirectResult(invokationResult);
+            }
+
+            throw new InvalidOperationException("Type of result is not supported");
+        }
+
+        private object[] MapActionParameters(MethodInfo action, IHttpRequest request)
+        {
+            var actionParameteres = action.GetParameters();
+            object[] mappedActionParameters = new object[actionParameteres.Length];
+            for (int i = 0; i < actionParameteres.Length; i++)
+            {
+                var actionParameter = actionParameteres[i];
+                var mappedActionParameter = new object();
+                if (actionParameter.ParameterType.IsPrimitive ||
+                    actionParameter.ParameterType == typeof(string))
+                {
+                    mappedActionParameter = this.ProcessPrimitiveParameter(actionParameter, request);
+                    if (mappedActionParameter == null)
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    mappedActionParameter = this.ProcessesBindingModelParameter(actionParameter, request);
+                    if (mappedActionParameter == null)
+                    {
+                        break;
+                    }
+                }
+                mappedActionParameters[i] = mappedActionParameter;
+            }
+
+            return mappedActionParameters;
+
+
+        }
+
+        private object ProcessesBindingModelParameter(
+            ParameterInfo actionParameter,
+            IHttpRequest request)
+        {
+            var bindingModelType = actionParameter.ParameterType;
+
+            var bindingModelInstance = Activator.CreateInstance(bindingModelType);
+
+            var bindingModelProperties = bindingModelType.GetProperties();
+
+            foreach (var bindingModelProperty in bindingModelProperties)
+            {
+                try
+                {
+                    var value = this.GetParameterFromRequestData(
+                        request,
+                        bindingModelProperty.Name.ToLower());
+
+                    bindingModelProperty.SetValue(
+                        bindingModelInstance,
+                        Convert.ChangeType(value, bindingModelProperty.PropertyType));
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"The property {bindingModelProperty.Name} could not be mapped");
+                }
+            }
+
+            return Convert.ChangeType(bindingModelInstance, bindingModelType);
+        }
+
+        private object ProcessPrimitiveParameter(
+            ParameterInfo actionParameter,
+            IHttpRequest request)
+        {
+            var value = this.GetParameterFromRequestData(request, actionParameter.Name);
+            if (value == null)
+            {
+                return value;
+            }
+            return Convert.ChangeType(value, actionParameter.ParameterType);
+        }
+
+        private object GetParameterFromRequestData(
+            IHttpRequest request,
+            string actionParameterName)
+        {
+            if (request.QueryData.ContainsKey(actionParameterName))
+            {
+                return request.QueryData[actionParameterName];
+            }
+
+            if (request.FormData.ContainsKey(actionParameterName))
+            {
+                return request.FormData[actionParameterName];
+            }
+
             return null;
         }
 
@@ -121,8 +232,7 @@ namespace SIS.Framework.Routers
             {
                 return null;
             }
-
-     
+   
             var fullyQualifiedControllerName = string.Format("{0}.{1}.{2}{3}, {0}",
                 MvcContext.Get.AssemblyName,
                 MvcContext.Get.ControllersFolder,

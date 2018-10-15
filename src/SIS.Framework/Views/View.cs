@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using SIS.Framework.ActionsResults.Contracts;
 
 namespace SIS.Framework.Views
@@ -7,9 +9,12 @@ namespace SIS.Framework.Views
     {
         private readonly string fullyQualifiedTemplateName;
 
-        public View(string fullyQualifiedTemplateName)
+        private readonly IDictionary<string, object> viewData;
+
+        public View(string fullyQualifiedTemplateName, IDictionary<string, object> viewData)
         {
             this.fullyQualifiedTemplateName = fullyQualifiedTemplateName;
+            this.viewData = viewData;
         }
 
         private string ReadFile()
@@ -25,6 +30,27 @@ namespace SIS.Framework.Views
         public string Render()
         {
             var fullHtml = this.ReadFile();
+            var renderedHtml = this.RenderHtml(fullHtml);
+
+            return renderedHtml;
+        }
+
+        private string RenderHtml(string fullHtml)
+        {
+            if (this.viewData.Any())
+            {
+                foreach (var viewDataKey in this.viewData.Keys)
+                {
+                    var dynamicDataPlaceholder = $"{{{{{viewDataKey}}}}}";
+                    if (fullHtml.Contains(dynamicDataPlaceholder))
+                    {
+                        fullHtml = fullHtml.Replace(
+                            dynamicDataPlaceholder,
+                            this.viewData[viewDataKey].ToString());
+                    }
+                }
+            }
+
             return fullHtml;
         }
     }

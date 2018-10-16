@@ -75,7 +75,9 @@ namespace SIS.MvcFramework
             }
 
             controllerInstance.Request = request;
+            controllerInstance.ViewEngine = new ViewEngine.ViewEngine(); // TODO: use serviceCollection
             controllerInstance.UserCookieService = serviceCollection.CreateInstance<IUserCookieService>();
+
 
             var actionParameterObjects = GetActionParameterObjects(methodInfo, request, serviceCollection);
             var httpResponse = methodInfo.Invoke(controllerInstance, actionParameterObjects.ToArray()) as IHttpResponse;

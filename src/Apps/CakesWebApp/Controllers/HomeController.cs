@@ -18,11 +18,12 @@ namespace CakesWebApp.Controllers
         [HttpGet("/hello")]
         public IHttpResponse HelloUser()
         {
-            return this.View("HelloUser", new
-                Dictionary<string, string>
-                {
-                    {"Username", this.User}
-                });
+            return this.View("HelloUser", new HelloUserViewModel { Username = this.User });
         }
+    }
+
+    public class HelloUserViewModel
+    {
+        public string Username { get; set; }
     }
 }

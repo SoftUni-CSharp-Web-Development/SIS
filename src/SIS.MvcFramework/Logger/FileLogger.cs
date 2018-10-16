@@ -9,9 +9,9 @@ namespace SIS.MvcFramework.Logger
 
         private readonly string fileName;
 
-        public FileLogger()
+        public FileLogger(string fileName)
         {
-            this.fileName = "log.txt";
+            this.fileName = fileName;
         }
 
         public void Log(string message)

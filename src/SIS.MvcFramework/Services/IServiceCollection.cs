@@ -1,4 +1,5 @@
 ﻿using System;
+using SIS.MvcFramework.Logger;
 
 namespace SIS.MvcFramework.Services
 {
@@ -9,5 +10,7 @@ namespace SIS.MvcFramework.Services
         T CreateInstance<T>();
 
         object CreateInstance(Type type);
+
+        void AddService<T>(Func<T> p);
     }
 }

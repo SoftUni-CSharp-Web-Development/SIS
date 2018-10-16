@@ -104,6 +104,8 @@ namespace SIS.MvcFramework
                     {
                         // TODO: Support IEnumerable
                         var stringValue = GetRequestData(request, propertyInfo.Name);
+                        
+                        // Convert.ChangeType()
                         var value = TryParse(stringValue, propertyInfo.PropertyType);
 
                         propertyInfo.SetMethod.Invoke(instance, new object[] {value});

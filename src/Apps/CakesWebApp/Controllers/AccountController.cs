@@ -13,6 +13,7 @@ using SIS.MvcFramework.Services;
 
 namespace CakesWebApp.Controllers
 {
+    // account/register
     public class AccountController : BaseController
     {
         private readonly IHashService hashService;

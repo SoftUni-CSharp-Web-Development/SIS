@@ -4,6 +4,8 @@ using System.Text;
 using System.Threading.Tasks;
 using SIS.HTTP.Cookies;
 using SIS.HTTP.Enums;
+using SIS.WebServer.Results;
+
 namespace SIS.WebServer
 {
     using HTTP.Common;
@@ -11,7 +13,6 @@ namespace SIS.WebServer
     using HTTP.Requests;
     using HTTP.Responses;
     using HTTP.Sessions;
-    using Results;
     using Routing;
 
     public class ConnectionHandler
@@ -105,7 +106,7 @@ namespace SIS.WebServer
             {
                 httpResponse
                     .AddCookie(new HttpCookie(HttpSessionStorage.SessionCookieKey
-                        , $"{sessionId}; HttpOnly"));
+                        , sessionId));
             }
         }
 
@@ -128,11 +129,11 @@ namespace SIS.WebServer
             }
             catch (BadRequestException e)
             {
-                await this.PrepareResponse(new TextResult(e.Message, HttpResponseStatusCode.BadRequest));
+                await this.PrepareResponse(new TextResult(e.ToString(), HttpResponseStatusCode.BadRequest));
             }
             catch (Exception e)
             {
-                await this.PrepareResponse(new TextResult(e.Message, HttpResponseStatusCode.InternalServerError));
+                await this.PrepareResponse(new TextResult(e.ToString(), HttpResponseStatusCode.InternalServerError));
             }
 
             this.client.Shutdown(SocketShutdown.Both);

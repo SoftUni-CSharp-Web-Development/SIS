@@ -10,15 +10,17 @@ namespace SIS.HTTP.Responses
 {
     public class HttpResponse : IHttpResponse
     {
-        public HttpResponse() { }
-
-        public HttpResponse(HttpResponseStatusCode statusCode)
+        public HttpResponse()
         {
-            CoreValidator.ThrowIfNull(statusCode, nameof(statusCode));
-
             this.Headers = new HttpHeaderCollection();
             this.Cookies = new HttpCookieCollection();
             this.Content = new byte[0];
+        }
+
+        public HttpResponse(HttpResponseStatusCode statusCode)
+            : this()
+        {
+            CoreValidator.ThrowIfNull(statusCode, nameof(statusCode));
             this.StatusCode = statusCode;
         }
 
@@ -51,9 +53,12 @@ namespace SIS.HTTP.Responses
         {
             StringBuilder result = new StringBuilder();
 
+            // HTTP/1.1 200 OK
             result
-                .Append($"{GlobalConstants.HttpOneProtocolFragment} {this.StatusCode.GetResponseLine()}").Append(GlobalConstants.HttpNewLine)
-                .Append(this.Headers).Append(GlobalConstants.HttpNewLine);
+                .Append($"{GlobalConstants.HttpOneProtocolFragment} {(int)this.StatusCode} {this.StatusCode.ToString()}")
+                .Append(GlobalConstants.HttpNewLine)
+                .Append(this.Headers)
+                .Append(GlobalConstants.HttpNewLine);
 
             if (this.Cookies.HasCookies())
             {

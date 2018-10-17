@@ -1,20 +1,29 @@
-﻿using SIS.HTTP.Enums;
+﻿using System.Collections.Generic;
+using SIS.HTTP.Enums;
 using SIS.HTTP.Requests;
 using SIS.HTTP.Responses;
-using SIS.WebServer.Results;
+using SIS.MvcFramework;
+using SIS.MvcFramework.Services;
 
 namespace CakesWebApp.Controllers
 {
     public class HomeController : BaseController
     {
-        public IHttpResponse Index(IHttpRequest request)
+        [HttpGet("/")]
+        public IHttpResponse Index()
         {
             return this.View("Index");
         }
 
-        public IHttpResponse HelloUser(IHttpRequest request)
+        [HttpGet("/hello")]
+        public IHttpResponse HelloUser()
         {
-            return new HtmlResult($"<h1>Hello, {this.GetUsername(request)}</h1>", HttpResponseStatusCode.Ok);
+            return this.View("HelloUser", new HelloUserViewModel { Username = this.User });
         }
+    }
+
+    public class HelloUserViewModel
+    {
+        public string Username { get; set; }
     }
 }

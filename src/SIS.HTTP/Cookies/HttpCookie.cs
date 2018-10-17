@@ -1,14 +1,16 @@
-﻿using System;
+using System;
 
 namespace SIS.HTTP.Cookies
 {
     using Common;
+    using System.Text;
 
     public class HttpCookie
     {
         private const int HttpCookieDefaultExpirationDays = 3;
+        private const string HttpCookieDefaultPath = "/";
 
-        public HttpCookie(string key, string value, int expires = HttpCookieDefaultExpirationDays)
+        public HttpCookie(string key, string value, int expires = HttpCookieDefaultExpirationDays, string path = HttpCookieDefaultPath)
         {
             CoreValidator.ThrowIfNullOrEmpty(key, nameof(key));
             CoreValidator.ThrowIfNullOrEmpty(value, nameof(value));
@@ -16,10 +18,11 @@ namespace SIS.HTTP.Cookies
             this.Key = key;
             this.Value = value;
             this.IsNew = true;
+            this.Path = path;
             this.Expires = DateTime.UtcNow.AddDays(expires);
         }
 
-        public HttpCookie(string key, string value, bool isNew, int expires = HttpCookieDefaultExpirationDays)
+        public HttpCookie(string key, string value, bool isNew, int expires = HttpCookieDefaultExpirationDays, string path = HttpCookieDefaultPath)
             : this(key, value, expires)
         {
             this.IsNew = isNew;
@@ -30,6 +33,8 @@ namespace SIS.HTTP.Cookies
         public string Value { get; }
 
         public DateTime Expires { get; private set; }
+
+        public string Path { get; set; }
 
         public bool IsNew { get; }
 
@@ -42,13 +47,17 @@ namespace SIS.HTTP.Cookies
 
         public override string ToString()
         {
-            var str = $"{this.Key}={this.Value}; Expires={this.Expires:R}";
+            var sb = new StringBuilder();
+            sb.Append($"{this.Key}={this.Value}; Expires={this.Expires:R}");
+
             if (this.HttpOnly)
             {
-                str += "; HttpOnly";
+                sb.Append("; HttpOnly");
             }
 
-            return str;
+            sb.Append($"; Path={this.Path}");
+
+            return sb.ToString();
         }
     }
 }

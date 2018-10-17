@@ -2,34 +2,39 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using CakesWebApp.Extensions;
 using CakesWebApp.Models;
+using CakesWebApp.ViewModels.Cakes;
 using SIS.HTTP.Requests;
 using SIS.HTTP.Responses;
-using SIS.WebServer.Results;
+using SIS.MvcFramework;
+using SIS.MvcFramework.Logger;
 
 namespace CakesWebApp.Controllers
 {
     public class CakesController : BaseController
     {
-        public IHttpResponse AddCakes(IHttpRequest request)
+        private readonly ILogger logger;
+
+        public CakesController(ILogger logger)
+        {
+            this.logger = logger;
+        }
+
+        [HttpGet("/cakes/add")]
+        public IHttpResponse AddCakes()
         {
             return this.View("AddCakes");
         }
 
-        public IHttpResponse DoAddCakes(IHttpRequest request)
+        [HttpPost("/cakes/add")]
+        public IHttpResponse DoAddCakes(DoAddCakesInputModel model)
         {
-            var name = request.FormData["name"].ToString().Trim().UrlDecode();
-            var price = decimal.Parse(request.FormData["price"].ToString().UrlDecode());
-            var picture = request.FormData["picture"].ToString().Trim().UrlDecode();
-
             // TODO: Validation
-
             var product = new Product
             {
-                Name = name,
-                Price = price,
-                ImageUrl = picture
+                Name = model.Name,
+                Price = model.Price,
+                ImageUrl = model.Picture,
             };
             this.Db.Products.Add(product);
 
@@ -44,25 +49,34 @@ namespace CakesWebApp.Controllers
             }
 
             // Redirect
-            return new RedirectResult("/");
+            return this.Redirect("/");
         }
 
-        public IHttpResponse ById(IHttpRequest request)
+        // cakes/view?id=1
+        [HttpGet("/cakes/view")]
+        public IHttpResponse ById()
         {
-            var id = int.Parse(request.QueryData["id"].ToString());
+            var id = int.Parse(this.Request.QueryData["id"].ToString());
             var product = this.Db.Products.FirstOrDefault(x => x.Id == id);
             if (product == null)
             {
                 return this.BadRequestError("Cake not found.");
             }
 
-            var viewBag = new Dictionary<string, string>
+            var viewModel = new ByIdViewModel
             {
-                {"Name", product.Name},
-                {"Price", product.Price.ToString(CultureInfo.InvariantCulture)},
-                {"ImageUrl", product.ImageUrl}
+                Name = product.Name,
+                Price = product.Price,
+                ImageUrl = product.ImageUrl,
             };
-            return this.View("CakeById", viewBag);
+            return this.View("CakeById", viewModel);
+        }
+
+        public class ByIdViewModel
+        {
+            public string Name { get; set; }
+            public decimal Price { get; set; }
+            public string ImageUrl { get; set; }
         }
     }
 }

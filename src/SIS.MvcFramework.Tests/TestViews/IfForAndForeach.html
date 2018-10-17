@@ -1,0 +1,16 @@
+﻿<h1>Hello, User</h1>
+@DateTime.UtcNow.Year
+
+@if (DateTime.UtcNow.Year == 2018)
+{
+    @foreach(var item in Enumerable.Range(1, 2).Where(x => x < 10))
+    {
+        @for(var i = 0; i < 3; i++)
+        {
+            <div><span>@item</span> <span>@i </span></div>
+        }
+    }
+}
+@else
+{
+}

@@ -1,0 +1,19 @@
+﻿using System;
+using System.Linq;
+using System.Text;
+using System.Collections.Generic;
+using SIS.MvcFramework.ViewEngine;
+using @Namespace;
+namespace MyAppViews
+{
+    public class @ViewTypeName : IView<@TypeFullName>
+    {
+        public string GetHtml(@TypeFullName model)
+        {
+            StringBuilder html = new StringBuilder();
+            var Model = model;
+            @CSharpMethodBody
+            return html.ToString().TrimEnd();
+        }
+    }
+}

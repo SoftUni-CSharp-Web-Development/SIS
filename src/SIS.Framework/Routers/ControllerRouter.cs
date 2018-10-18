@@ -50,7 +50,7 @@ namespace SIS.Framework.Routers
             }
 
             //Controller
-            var controller = this.GetController(controllerName, request);
+            var controller = this.GetController(controllerName);
 
             //Action
             var action = this.GetAction(requestMethod, controller, actionName);
@@ -59,7 +59,7 @@ namespace SIS.Framework.Routers
             {
                 throw new NullReferenceException();
             }
-
+            controller.Request = request;
             object[] actionParameters = this.MapActionParameters(action, request, controller);
 
             var actionResult = InvokeAction(controller, action, actionParameters);
@@ -67,7 +67,7 @@ namespace SIS.Framework.Routers
             return this.PrepareResponse(actionResult);
         }
 
-        private Controller GetController(string controllerName, IHttpRequest request)
+        private Controller GetController(string controllerName)
         {
             if (string.IsNullOrWhiteSpace(controllerName))
             {
@@ -220,6 +220,8 @@ namespace SIS.Framework.Routers
 
                     if (!validationAttribute.IsValid(propertyValue))
                     {
+                        // password -> "error msg"
+                        // property -> error
                         return false;
                     }
                 }

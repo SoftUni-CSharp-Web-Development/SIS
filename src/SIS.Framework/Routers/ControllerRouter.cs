@@ -8,6 +8,7 @@ using SIS.Framework.ActionsResults.Contracts;
 using SIS.Framework.Attributes.Methods;
 using SIS.Framework.Attributes.Methods.Base;
 using SIS.Framework.Controllers;
+using SIS.Framework.Services.Contracts;
 using SIS.HTTP.Enums;
 using SIS.HTTP.Exceptions;
 using SIS.HTTP.Extensions;
@@ -20,6 +21,13 @@ namespace SIS.Framework.Routers
 {
     public class ControllerRouter : IHttpHandler
     {
+        private readonly IDependencyContainer dependencyContainer;
+
+        public ControllerRouter(IDependencyContainer dependencyContainer)
+        {
+            this.dependencyContainer = dependencyContainer;
+        }
+
         public IHttpResponse Handle(IHttpRequest request)
         {
             var controllerName = string.Empty;
@@ -73,7 +81,7 @@ namespace SIS.Framework.Routers
                 MvcContext.Get.ControllerSuffix);
 
             var controllerType = Type.GetType(fullyQualifiedControllerName);
-            var controller = (Controller)Activator.CreateInstance(controllerType);
+            var controller = (Controller)this.dependencyContainer.CreateInstance(controllerType);
             return controller;
         }
 

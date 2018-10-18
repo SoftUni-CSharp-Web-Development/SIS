@@ -12,6 +12,7 @@ namespace SIS.MvcFramework.Tests.ViewEngine
         [InlineData("IfForAndForeach")]
         [InlineData("ViewWithNoCode")]
         [InlineData("WorkWithViewModel")]
+        [InlineData("MultipleKeyValuePairsAndVar")]
         public void RunTestViews(string testViewName)
         {
             var viewCode = File.ReadAllText($"TestViews/{testViewName}.html");

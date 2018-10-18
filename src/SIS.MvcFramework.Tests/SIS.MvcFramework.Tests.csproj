@@ -19,6 +19,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="TestViews\MultipleKeyValuePairsAndVar.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TestViews\MultipleKeyValuePairsAndVar.Result.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="TestViews\IfForAndForeach.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

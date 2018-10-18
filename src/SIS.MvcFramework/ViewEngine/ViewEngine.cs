@@ -19,12 +19,20 @@ namespace SIS.MvcFramework.ViewEngine
             string typeNamespace = typeof(T).Namespace;
             string typeFullName = typeof(T).FullName.Replace("+", ".");
 
-            var viewCodeAsCSharpCode = File.ReadAllText("../../../../../SIS.MvcFramework/ViewEngine/CSharpTemplate.txt");
+            var assembly = Assembly.GetExecutingAssembly();
+            var resourceName = "SIS.MvcFramework.ViewEngine.CSharpTemplate.txt";
 
-            viewCodeAsCSharpCode = viewCodeAsCSharpCode.Replace("@ViewTypeName", viewTypeName)
-                                .Replace("@CSharpMethodBody", cSharpMethodBody)
-                                .Replace("@Namespace", typeNamespace)
-                                .Replace("@TypeFullName", typeFullName);
+            string viewCodeAsCSharpCode = null;
+
+            var stream = assembly.GetManifestResourceStream(resourceName);
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                viewCodeAsCSharpCode = reader.ReadToEnd()
+                                             .Replace("@ViewTypeName", viewTypeName)
+                                             .Replace("@CSharpMethodBody", cSharpMethodBody)
+                                             .Replace("@Namespace", typeNamespace)
+                                             .Replace("@TypeFullName", typeFullName);
+            }
 
             var instanceOfViewClass = this.GetInstance(viewCodeAsCSharpCode, "MyAppViews."
                                                                     + viewTypeName, typeof(T)) as IView<T>;

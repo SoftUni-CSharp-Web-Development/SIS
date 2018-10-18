@@ -1,0 +1,7 @@
+﻿@var count = 1;
+
+@foreach (var item in Model.List)
+{
+<b>@count++</b>.
+<a href="/track/details?trackId=@item&albumId=@Model.String">@item</a>
+}

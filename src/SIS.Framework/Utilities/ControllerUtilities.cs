@@ -14,7 +14,7 @@ namespace SIS.Framework.Utilities
             string controllerName,
             string viewName) =>
             string.Format("../../../{0}/{1}/{2}.html",
-                MvcContext.Get.ViewsFolder,
+                MvcContext.Get.ViewsFolderName,
                 controllerName,
                 viewName);
     }

@@ -14,11 +14,12 @@ namespace IRunesWebApp
     {
         static void Main(string[] args)
         {
-            var handler = new ControllerRouter();
-            Server server = new Server(80, handler);
+            var handlingContext = new HttpRouteHandlingContext(
+                new ControllerRouter(),
+                new ResourceRouter());
+            Server server = new Server(80, handlingContext);
             var engine = new MvcEngine();
             engine.Run(server);
-            //MvcEngine.Run(server);
         }
 
         private static void ConfigureRouting(ServerRoutingTable serverRoutingTable)

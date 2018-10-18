@@ -4,9 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IRunesWebApp.Data
 {
+    // ReSharper disable once InconsistentNaming
     public class IRunesContext : DbContext
     {
-        public DbSet<User> Users { get; set; }
+        public DbSet<User> Users { get; set; }  
 
         public DbSet<Album> Albums { get; set; }
 

@@ -40,17 +40,17 @@ namespace SIS.MvcFramework
             }
         }
         
-        protected IHttpResponse View(string viewName)
+        protected IHttpResponse View(string viewName, string layoutName = "_Layout")
         {
-            var allContent = this.GetViewContent(viewName, (object)null);
+            var allContent = this.GetViewContent(viewName, (object)null, layoutName);
             this.PrepareHtmlResult(allContent);
             return this.Response;
         }
         
-        protected IHttpResponse View<T>(string viewName, T model = null)
+        protected IHttpResponse View<T>(string viewName, T model = null, string layoutName = "_Layout")
             where T : class
         {
-            var allContent = this.GetViewContent(viewName, model);
+            var allContent = this.GetViewContent(viewName, model, layoutName);
             this.PrepareHtmlResult(allContent);
             return this.Response;
         }
@@ -79,9 +79,8 @@ namespace SIS.MvcFramework
 
         protected IHttpResponse BadRequestError(string errorMessage)
         {
-            var viewBag = new Dictionary<string, string>();
-            viewBag.Add("Error", errorMessage);
-            var allContent = this.GetViewContent("Error", viewBag);
+            var viewModel = new ErrorViewModel {Error = errorMessage};
+            var allContent = this.GetViewContent("Error", viewModel);
             this.PrepareHtmlResult(allContent);
             this.Response.StatusCode = HttpResponseStatusCode.BadRequest;
             return this.Response;
@@ -89,20 +88,19 @@ namespace SIS.MvcFramework
 
         protected IHttpResponse ServerError(string errorMessage)
         {
-            var viewBag = new Dictionary<string, string>();
-            viewBag.Add("Error", errorMessage);
-            var allContent = this.GetViewContent("Error", viewBag);
+            var viewModel = new ErrorViewModel { Error = errorMessage };
+            var allContent = this.GetViewContent("Error", viewModel);
             this.PrepareHtmlResult(allContent);
             this.Response.StatusCode = HttpResponseStatusCode.InternalServerError;
             return this.Response;
         }
 
-        private string GetViewContent<T>(string viewName, T model)
+        private string GetViewContent<T>(string viewName, T model, string layoutName = "_Layout")
         {
             var content = this.ViewEngine.GetHtml(viewName,
                 System.IO.File.ReadAllText("Views/" + viewName + ".html"), model);
 
-            var layoutFileContent = System.IO.File.ReadAllText("Views/_Layout.html");
+            var layoutFileContent = System.IO.File.ReadAllText($"Views/{layoutName}.html");
             var allContent = layoutFileContent.Replace("@RenderBody()", content);
             var layoutContent = this.ViewEngine.GetHtml("_Layout", allContent, model);
             return layoutContent;

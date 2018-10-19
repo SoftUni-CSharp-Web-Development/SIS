@@ -56,7 +56,13 @@ namespace SIS.MvcFramework
                         continue;
                     }
 
-                    routingTable.Add(httpAttribute.Method, httpAttribute.Path,
+                    var path = httpAttribute.Path;
+                    if (!path.StartsWith("/"))
+                    {
+                        path = "/" + path;
+                    }
+
+                    routingTable.Add(httpAttribute.Method, path,
                         (request) => ExecuteAction(controller, methodInfo, request, serviceCollection));
                     Console.WriteLine($"Route registered: {controller.Name}.{methodInfo.Name} => {httpAttribute.Method} => {httpAttribute.Path}");
                 }

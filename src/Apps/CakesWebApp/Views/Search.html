@@ -3,6 +3,9 @@
 {
     <div>
         <a href="/cakes/view?id=@cake.Id">@cake.Name</a> $@cake.Price
-        <button class="btn-primary">Order</button>
+        <form action="/orders/add" method="post">
+            <input name="productId" type="hidden" value="@cake.Id" />
+            <input type="submit" class="btn-primary" value="Order"/>
+        </form>
     </div>
 }

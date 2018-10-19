@@ -28,6 +28,9 @@
     <None Update="Views\HelloUser.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Views\OrderById.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Views\Profile.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

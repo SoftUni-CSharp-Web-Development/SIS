@@ -1,6 +1,6 @@
 ﻿namespace CakesWebApp.ViewModels.Cakes
 {
-    public class ByIdViewModel
+    public class CakeViewModel
     {
         public int Id { get; set; }
 

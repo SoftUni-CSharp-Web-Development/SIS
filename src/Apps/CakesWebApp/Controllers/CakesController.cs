@@ -62,7 +62,7 @@ namespace CakesWebApp.Controllers
                 return this.BadRequestError("Cake not found.");
             }
 
-            var viewModel = new ByIdViewModel
+            var viewModel = new CakeViewModel
             {
                 Name = product.Name,
                 Price = product.Price,
@@ -75,7 +75,7 @@ namespace CakesWebApp.Controllers
         [HttpGet("/cakes/search")]
         public IHttpResponse Search(string searchText)
         {
-            var cakes = this.Db.Products.Where(x => x.Name.Contains(searchText)).Select(x => new ByIdViewModel
+            var cakes = this.Db.Products.Where(x => x.Name.Contains(searchText)).Select(x => new CakeViewModel
             {
                 Id = x.Id,
                 Name = x.Name,

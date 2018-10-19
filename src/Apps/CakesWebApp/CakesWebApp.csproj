@@ -12,32 +12,39 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\SIS.HTTP\SIS.HTTP.csproj" />
-    <ProjectReference Include="..\..\SIS.WebServer\SIS.WebServer.csproj" />
+    <ProjectReference Include="..\..\SIS.MvcFramework\SIS.MvcFramework.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Views\CakeById.html">
+    <None Update="Views\CakesViews\CakeById.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Views\Error.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Views\AddCakes.html">
+    <None Update="Views\CakesViews\AddCakes.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Views\AccountViews\HelloUser.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Views\_Layout.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Views\Index.html">
+    <None Update="Views\HomeViews\Index.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Views\Login.html">
+    <None Update="Views\AccountViews\Login.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Views\Register.html">
+    <None Update="Views\AccountViews\Register.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\" />
+    <Folder Include="ViewModels\Home\" />
   </ItemGroup>
 
 </Project>

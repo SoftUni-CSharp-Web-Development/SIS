@@ -4,63 +4,63 @@ using Microsoft.EntityFrameworkCore.Internal;
 using SIS.HTTP.Enums;
 using SIS.HTTP.Requests;
 using SIS.HTTP.Responses;
-using SIS.WebServer.Results;
 using System.Linq;
 using CakesWebApp.Models;
-using CakesWebApp.Services;
+using CakesWebApp.ViewModels.Account;
 using SIS.HTTP.Cookies;
+using SIS.MvcFramework;
+using SIS.MvcFramework.Services;
 
 namespace CakesWebApp.Controllers
 {
+    // account/register
     public class AccountController : BaseController
     {
-        private IHashService hashService;
+        private readonly IHashService hashService;
 
-        public AccountController()
+        public AccountController(IHashService hashService)
         {
-            this.hashService = new HashService();
+            this.hashService = hashService;
         }
 
-        public IHttpResponse Register(IHttpRequest request)
+        [HttpGet("/register")]
+        public IHttpResponse Register()
         {
-            return this.View("Register");
+            return this.View("Register", "AccountViews");
         }
 
-        public IHttpResponse DoRegister(IHttpRequest request)
+        [HttpPost("/register")]
+        public IHttpResponse DoRegister(DoRegisterInputModel model)
         {
-            var userName = request.FormData["username"].ToString().Trim();
-            var password = request.FormData["password"].ToString();
-            var confirmPassword = request.FormData["confirmPassword"].ToString();
-
             // Validate
-            if (string.IsNullOrWhiteSpace(userName) || userName.Length < 4)
+            if (string.IsNullOrWhiteSpace(model.Username) || model.Username.Trim().Length < 4)
             {
                 return this.BadRequestError("Please provide valid username with length of 4 or more characters.");
             }
 
-            if (this.Db.Users.Any(x => x.Username == userName))
+            if (this.Db.Users.Any(x => x.Username == model.Username.Trim()))
             {
                 return this.BadRequestError("User with the same name already exists.");
             }
 
-            if (string.IsNullOrWhiteSpace(password) || password.Length < 6)
+            if (string.IsNullOrWhiteSpace(model.Password) || model.Password.Length < 6)
             {
                 return this.BadRequestError("Please provide password of length 6 or more.");
             }
 
-            if (password != confirmPassword)
+            if (model.Password != model.ConfirmPassword)
             {
                 return this.BadRequestError("Passwords do not match.");
             }
 
             // Hash password
-            var hashedPassword = this.hashService.Hash(password);
+            var hashedPassword = this.hashService.Hash(model.Password);
 
             // Create user
             var user = new User
             {
-                Name = userName,
-                Username = userName,
+                Name = model.Username.Trim(),
+                Username = model.Username.Trim(),
                 Password = hashedPassword,
             };
             this.Db.Users.Add(user);
@@ -78,23 +78,22 @@ namespace CakesWebApp.Controllers
             // TODO: Login
 
             // Redirect
-            return new RedirectResult("/");
+            return this.Redirect("/");
         }
 
-        public IHttpResponse Login(IHttpRequest request)
+        [HttpGet("/login")]
+        public IHttpResponse Login()
         {
-            return this.View("Login");
+            return this.View("Login", "AccountViews");
         }
 
-        public IHttpResponse DoLogin(IHttpRequest request)
+        [HttpPost("/login")]
+        public IHttpResponse DoLogin(DoLoginInputModel model)
         {
-            var userName = request.FormData["username"].ToString().Trim();
-            var password = request.FormData["password"].ToString();
-
-            var hashedPassword = this.hashService.Hash(password);
+            var hashedPassword = this.hashService.Hash(model.Password);
 
             var user = this.Db.Users.FirstOrDefault(x => 
-                x.Username == userName &&
+                x.Username == model.Username.Trim() &&
                 x.Password == hashedPassword);
 
             if (user == null)
@@ -104,24 +103,23 @@ namespace CakesWebApp.Controllers
 
             var cookieContent = this.UserCookieService.GetUserCookie(user.Username);
 
-            var response = new RedirectResult("/");
             var cookie = new HttpCookie(".auth-cakes", cookieContent, 7) { HttpOnly = true };
-            response.Cookies.Add(cookie);
-            return response;
+            this.Response.Cookies.Add(cookie);
+            return this.Redirect("/");
         }
 
-        public IHttpResponse Logout(IHttpRequest request)
+        [HttpGet("/logout")]
+        public IHttpResponse Logout()
         {
-            if (!request.Cookies.ContainsCookie(".auth-cakes"))
+            if (!this.Request.Cookies.ContainsCookie(".auth-cakes"))
             {
-                return new RedirectResult("/");
+                return this.Redirect("/");
             }
 
-            var cookie = request.Cookies.GetCookie(".auth-cakes");
+            var cookie = this.Request.Cookies.GetCookie(".auth-cakes");
             cookie.Delete();
-            var response = new RedirectResult("/");
-            response.Cookies.Add(cookie);
-            return response;
+            this.Response.Cookies.Add(cookie);
+            return this.Redirect("/");
         }
     }
 }

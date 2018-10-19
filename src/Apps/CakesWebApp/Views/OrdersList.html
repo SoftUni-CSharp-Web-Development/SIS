@@ -1,0 +1,27 @@
+﻿<h1>List of my orders</h1>
+
+<table class="table table-bordered table-striped">
+    <tr><th>Order id</th><th>Created on</th><th>Count</th><th>Sum</th><th>Finish</th></tr>
+    @for(int i = 0; i < Model.Count(); i++)
+    { var order = Model[i];
+        <tr>
+            <td><a href="/orders/byid?id=@order.Id">@order.Id</a></td>
+            <td>@order.CreatedOn</td>
+            <td>@order.NumberOfProducts</td>
+            <td>$@order.SumOfProductPrices</td>
+            <td>
+                @if (i == Model.Count() - 1)
+                {
+                    <form action="/orders/finish" method="post">
+                        <input type="hidden" name="orderId" value="@order.Id"/>
+                        <input type="submit" class="btn-primary" value="Finish"/>
+                    </form>
+                }
+                @else
+                {
+                    finish
+                }
+            </td>
+        </tr>
+    }
+</table>

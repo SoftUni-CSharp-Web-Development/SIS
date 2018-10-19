@@ -1,0 +1,8 @@
+﻿<h1>Searching for @Model.SearchText</h1>
+@foreach (var cake in Model.Cakes)
+{
+    <div>
+        <a href="/cakes/view?id=@cake.Id">@cake.Name</a> $@cake.Price
+        <button class="btn-primary">Order</button>
+    </div>
+}

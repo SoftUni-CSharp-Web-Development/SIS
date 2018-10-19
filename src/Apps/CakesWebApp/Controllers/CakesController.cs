@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using CakesWebApp.Models;
@@ -72,11 +71,24 @@ namespace CakesWebApp.Controllers
             return this.View("CakeById", viewModel);
         }
 
-        public class ByIdViewModel
+        // cakes/search?searchText=cake
+        [HttpGet("/cakes/search")]
+        public IHttpResponse Search(string searchText)
         {
-            public string Name { get; set; }
-            public decimal Price { get; set; }
-            public string ImageUrl { get; set; }
+            var cakes = this.Db.Products.Where(x => x.Name.Contains(searchText)).Select(x => new ByIdViewModel
+            {
+                Id = x.Id,
+                Name = x.Name,
+                ImageUrl = x.ImageUrl,
+                Price = x.Price,
+            }).ToList();
+            var cakesViewModel = new SearchViewModel
+            {
+                Cakes = cakes,
+                SearchText = searchText,
+            };
+
+            return this.View("Search", cakesViewModel);
         }
     }
 }

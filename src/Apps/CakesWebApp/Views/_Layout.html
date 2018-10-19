@@ -21,7 +21,12 @@
                     <li class="list-group-item"><i class="fas fa-user-slash"></i> <a href="/account/logout">Logout</a></li>
                 }
                 <li class="list-group-item"><i class="fas fa-home"></i> <a href="/cakes/add">Add cakes</a></li>
-                <li class="list-group-item"><i class="fas fa-home"></i> <a href="/cakes/view?id=1">View first cake</a></li>
+                <li class="list-group-item">
+                    <form action="/cakes/search" method="get">
+                        <input type="text" name="searchText" class="form-control"/>
+                        <input type="submit" class="form-control btn-primary" value="Search"/>
+                    </form>
+                </li>
             </ul>
         </div>
         <div class="col-md-9 col-sm-12">

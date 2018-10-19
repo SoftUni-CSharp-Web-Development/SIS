@@ -23,7 +23,7 @@ namespace CakesWebApp.Controllers
         [HttpGet("/cakes/add")]
         public IHttpResponse AddCakes()
         {
-            return this.View("AddCakes");
+            return this.View("AddCakes", "CakesViews");
         }
 
         [HttpPost("/cakes/add")]
@@ -69,7 +69,7 @@ namespace CakesWebApp.Controllers
                 Price = product.Price,
                 ImageUrl = product.ImageUrl,
             };
-            return this.View("CakeById", viewModel);
+            return this.View("CakeById", viewModel, "CakesViews");
         }
 
         public class ByIdViewModel

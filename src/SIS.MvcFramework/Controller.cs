@@ -40,17 +40,17 @@ namespace SIS.MvcFramework
             }
         }
         
-        protected IHttpResponse View(string viewName)
+        protected IHttpResponse View(string viewName, string folderName = null)
         {
-            var allContent = this.GetViewContent(viewName, (object)null);
+            var allContent = this.GetViewContent(viewName, (object)null, folderName);
             this.PrepareHtmlResult(allContent);
             return this.Response;
         }
         
-        protected IHttpResponse View<T>(string viewName, T model = null)
+        protected IHttpResponse View<T>(string viewName, T model = null, string folderName = null)
             where T : class
         {
-            var allContent = this.GetViewContent(viewName, model);
+            var allContent = this.GetViewContent(viewName, model, folderName);
             this.PrepareHtmlResult(allContent);
             return this.Response;
         }
@@ -97,10 +97,14 @@ namespace SIS.MvcFramework
             return this.Response;
         }
 
-        private string GetViewContent<T>(string viewName, T model)
+        private string GetViewContent<T>(string viewName, T model, string folderName = null)
         {
+            if (folderName != null)
+            {
+                folderName = folderName + "/";
+            }
             var content = this.ViewEngine.GetHtml(viewName,
-                System.IO.File.ReadAllText("Views/" + viewName + ".html"), model);
+                System.IO.File.ReadAllText("Views/" + folderName + viewName + ".html"), model);
 
             var layoutFileContent = System.IO.File.ReadAllText("Views/_Layout.html");
             var allContent = layoutFileContent.Replace("@RenderBody()", content);

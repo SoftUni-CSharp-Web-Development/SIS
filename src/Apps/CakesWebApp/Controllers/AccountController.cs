@@ -26,7 +26,7 @@ namespace CakesWebApp.Controllers
         [HttpGet("/register")]
         public IHttpResponse Register()
         {
-            return this.View("Register");
+            return this.View("Register", "AccountViews");
         }
 
         [HttpPost("/register")]
@@ -84,7 +84,7 @@ namespace CakesWebApp.Controllers
         [HttpGet("/login")]
         public IHttpResponse Login()
         {
-            return this.View("Login");
+            return this.View("Login", "AccountViews");
         }
 
         [HttpPost("/login")]

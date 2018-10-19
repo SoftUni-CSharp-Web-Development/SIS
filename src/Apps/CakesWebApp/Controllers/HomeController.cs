@@ -12,13 +12,13 @@ namespace CakesWebApp.Controllers
         [HttpGet("/")]
         public IHttpResponse Index()
         {
-            return this.View("Index");
+            return this.View("Index", "HomeViews");
         }
 
         [HttpGet("/hello")]
         public IHttpResponse HelloUser()
         {
-            return this.View("HelloUser", new HelloUserViewModel { Username = this.User });
+            return this.View("HelloUser", new HelloUserViewModel { Username = this.User }, "HomeViews");
         }
     }
 

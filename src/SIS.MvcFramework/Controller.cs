@@ -79,9 +79,11 @@ namespace SIS.MvcFramework
 
         protected IHttpResponse BadRequestError(string errorMessage)
         {
-            var viewBag = new Dictionary<string, string>();
-            viewBag.Add("Error", errorMessage);
-            var allContent = this.GetViewContent("Error", viewBag);
+            var viewModel = new BadRequestViewModel()
+            {
+                ErrorMessage = errorMessage
+            };
+            var allContent = this.GetViewContent("Error", viewModel);
             this.PrepareHtmlResult(allContent);
             this.Response.StatusCode = HttpResponseStatusCode.BadRequest;
             return this.Response;
@@ -89,9 +91,11 @@ namespace SIS.MvcFramework
 
         protected IHttpResponse ServerError(string errorMessage)
         {
-            var viewBag = new Dictionary<string, string>();
-            viewBag.Add("Error", errorMessage);
-            var allContent = this.GetViewContent("Error", viewBag);
+            var viewModel = new ServerErrorViewModel()
+            {
+                ErrorMessage = errorMessage
+            };
+            var allContent = this.GetViewContent("Error", errorMessage);
             this.PrepareHtmlResult(allContent);
             this.Response.StatusCode = HttpResponseStatusCode.InternalServerError;
             return this.Response;
@@ -117,5 +121,15 @@ namespace SIS.MvcFramework
             this.Response.Headers.Add(new HttpHeader(HttpHeader.ContentType, "text/html; charset=utf-8"));
             this.Response.Content = Encoding.UTF8.GetBytes(content);
         }
+    }
+
+    public class ServerErrorViewModel
+    {
+        public string ErrorMessage { get; set; }
+    }
+
+    public class BadRequestViewModel
+    {
+        public string ErrorMessage { get; set; }
     }
 }

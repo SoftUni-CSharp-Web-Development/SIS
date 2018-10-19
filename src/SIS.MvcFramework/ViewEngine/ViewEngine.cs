@@ -15,7 +15,7 @@ namespace SIS.MvcFramework.ViewEngine
 {
     public class ViewEngine : IViewEngine
     {
-        public string GetHtml<T>(string viewName, string viewCode, T model)
+        public string GetHtml<T>(string viewName, string viewCode, T model, string user = null)
         {
             var viewTypeName = viewName + "View";
             var csharpMethodBody = this.GenerateCSharpMethodBody(viewCode);
@@ -30,10 +30,11 @@ namespace MyAppViews
 {
     public class " + viewTypeName + " : IView<" + typeof(T).FullName.Replace("+", ".") + @">
     {
-        public string GetHtml(" + typeof(T).FullName.Replace("+", ".") + @" model)
+        public string GetHtml(" + typeof(T).FullName.Replace("+", ".") + @" model, string user)
         {
             StringBuilder html = new StringBuilder();
             var Model = model;
+            var User = user;
 
             " + csharpMethodBody + @"
 
@@ -43,7 +44,7 @@ namespace MyAppViews
 }";
             var instanceOfViewClass =
                 this.GetInstance(viewCodeAsCSharpCode, "MyAppViews." + viewTypeName, typeof(T)) as IView<T>;
-            var html = instanceOfViewClass.GetHtml(model);
+            var html = instanceOfViewClass.GetHtml(model, user);
             return html;
         }
 

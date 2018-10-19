@@ -10,10 +10,16 @@
         <div class="col-md-3 col-sm-12">
             <ul class="list-group">
                 <li class="list-group-item"><i class="fas fa-home"></i> <a href="/">Home</a></li>
-                <li class="list-group-item"><i class="fas fa-user-check"></i> <a href="/login">Login</a></li>
-                <li class="list-group-item"><i class="fas fa-user-plus"></i> <a href="/register">Register</a></li>
-                <li class="list-group-item"><i class="fas fa-user"></i> <a href="/user/profile">My Profile</a></li>
-                <li class="list-group-item"><i class="fas fa-user-slash"></i> <a href="/logout">Logout</a></li>
+                @if (User == null)
+                {
+                    <li class="list-group-item"><i class="fas fa-user-check"></i> <a href="/account/login">Login</a></li>
+                    <li class="list-group-item"><i class="fas fa-user-plus"></i> <a href="/account/register">Register</a></li>
+                }
+                @else
+                {
+                    <li class="list-group-item"><i class="fas fa-user"></i> <a href="/user/profile">My Profile</a></li>
+                    <li class="list-group-item"><i class="fas fa-user-slash"></i> <a href="/account/logout">Logout</a></li>
+                }
                 <li class="list-group-item"><i class="fas fa-home"></i> <a href="/cakes/add">Add cakes</a></li>
                 <li class="list-group-item"><i class="fas fa-home"></i> <a href="/cakes/view?id=1">View first cake</a></li>
             </ul>

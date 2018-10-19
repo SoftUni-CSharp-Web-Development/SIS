@@ -98,11 +98,11 @@ namespace SIS.MvcFramework
         private string GetViewContent<T>(string viewName, T model, string layoutName = "_Layout")
         {
             var content = this.ViewEngine.GetHtml(viewName,
-                System.IO.File.ReadAllText("Views/" + viewName + ".html"), model);
+                System.IO.File.ReadAllText("Views/" + viewName + ".html"), model, this.User);
 
             var layoutFileContent = System.IO.File.ReadAllText($"Views/{layoutName}.html");
             var allContent = layoutFileContent.Replace("@RenderBody()", content);
-            var layoutContent = this.ViewEngine.GetHtml("_Layout", allContent, model);
+            var layoutContent = this.ViewEngine.GetHtml("_Layout", allContent, model, this.User);
             return layoutContent;
         }
 

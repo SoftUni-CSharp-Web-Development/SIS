@@ -1,8 +1,10 @@
 ﻿using IRunesWebApp.Services.Contracts;
 using IRunesWebApp.ViewModels;
 using SIS.Framework.ActionsResults.Base;
+using SIS.Framework.Attributes.Action;
 using SIS.Framework.Attributes.Methods;
 using SIS.Framework.Controllers;
+using SIS.Framework.Security;
 
 namespace IRunesWebApp.Controllers
 {
@@ -34,14 +36,13 @@ namespace IRunesWebApp.Controllers
             {
                 return this.RedirectToAction("/users/login");
             }
-
-            //var response = new RedirectResult("/home/index");
-            //this.SignInUser(username, response, request);
-            this.Request.Session.AddParameter("username", model.Username);
+            
+            this.SignIn(new IdentityUser {Username = model.Username, Password = model.Password});
             return this.RedirectToAction("/home/index");
         }
 
-        //public IHttpResponse Register(IHttpRequest request) => this.ViewMethod();
+        [Authorize]
+        public IActionResult Register() => this.View();
 
         //public IHttpResponse PostRegister(IHttpRequest request)
         //{

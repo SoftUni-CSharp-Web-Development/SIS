@@ -1,0 +1,10 @@
+﻿<div>
+    <h1>@Model.Username</h1>
+    <hr />
+    <h3>@Model.Password</h3>
+    <hr />
+    
+    <ul>
+        @Model.Collection.NestedViewModels(<li>@Item</li>)
+    </ul>
+</div>

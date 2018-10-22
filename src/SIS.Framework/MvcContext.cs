@@ -16,6 +16,8 @@
 
         public string ViewsFolderName { get; set; } = "Views";
 
+        public string SharedViewsFolderName { get; set; } = "Shared";
+
         public string ModelsFolder { get; set; } = "Models";
 
         public string ResourceFolderName { get; set; } = "Resources";

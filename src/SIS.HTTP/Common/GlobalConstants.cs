@@ -13,6 +13,5 @@
         public const string DirectorySeparator = "/";
 
         public const string HtmlFileExtension = ".html";
-
     }
 }

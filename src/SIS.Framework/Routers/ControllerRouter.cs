@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using SIS.Framework.ActionsResults.Base;
 using SIS.Framework.ActionsResults.Contracts;
+using SIS.Framework.Attributes.Action;
 using SIS.Framework.Attributes.Methods;
 using SIS.Framework.Attributes.Methods.Base;
 using SIS.Framework.Controllers;
@@ -64,7 +65,29 @@ namespace SIS.Framework.Routers
 
             var actionResult = InvokeAction(controller, action, actionParameters);
 
-            return this.PrepareResponse(actionResult);
+            var isAuthorized = this.Authorize(controller, action);
+
+            if (!isAuthorized)
+            {
+                return new UnauthorizedResult();
+            }
+
+            return
+                this.PrepareResponse(actionResult);
+        }
+
+        private bool Authorize(Controller controller, MethodInfo action)
+        {
+            if (action
+                .GetCustomAttributes()
+                .Where(ca => ca is AuthorizeAttribute)
+                .Cast<AuthorizeAttribute>()
+                .Any(a => !a.IsAuthenticated(controller.Identity())))
+            {
+                return false;
+            }
+
+            return true;
         }
 
         private Controller GetController(string controllerName)

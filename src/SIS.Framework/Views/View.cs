@@ -10,74 +10,63 @@ namespace SIS.Framework.Views
     {
         private const string RenderBodyConstant = "@RenderBody()";
 
-        private readonly string fullyQualifiedTemplateName;
+        private readonly string fullHtmlContent;
 
-        private readonly IDictionary<string, object> viewData;
-
-        public View(string fullyQualifiedTemplateName, IDictionary<string, object> viewData)
+        public View(string fullHtmlContent)
         {
-            this.fullyQualifiedTemplateName = fullyQualifiedTemplateName;
-            this.viewData = viewData;
+            this.fullHtmlContent = fullHtmlContent;
         }
 
-        private string ReadFile()
-        {
-            if (!File.Exists(this.fullyQualifiedTemplateName))
-            {
-                throw new FileNotFoundException($"View does not exist at {fullyQualifiedTemplateName}");
-            }
+        public string Render() => this.fullHtmlContent;
 
-            return File.ReadAllText(this.fullyQualifiedTemplateName);
-        }
+        //private string ReadFile()
+        //{
+        //    if (!File.Exists(this.fullyQualifiedTemplateName))
+        //    {
+        //        throw new FileNotFoundException($"View does not exist at {fullyQualifiedTemplateName}");
+        //    }
 
-        public string Render()
-        {
-            var fullHtml = this.ReadFile();
-            var renderedHtml = this.RenderHtml(fullHtml);
+        //    return File.ReadAllText(this.fullyQualifiedTemplateName);
+        //}
 
-            var layoutWithView = this.AddViewToLayout(renderedHtml);
+        //private string AddViewToLayout(string renderedHtml)
+        //{
+        //    var layoutViewPath = MvcContext.Get.RootDirectoryRelativePath +
+        //        GlobalConstants.DirectorySeparator +
+        //        MvcContext.Get.ViewsFolderName +
+        //        GlobalConstants.DirectorySeparator +
+        //        MvcContext.Get.LayoutViewName +
+        //        GlobalConstants.HtmlFileExtension;
 
-            return layoutWithView;
-        }
+        //    if (!File.Exists(layoutViewPath))
+        //    {
+        //        throw new FileNotFoundException($"View does not exist at {fullyQualifiedTemplateName}");
+        //    }
 
-        private string AddViewToLayout(string renderedHtml)
-        {
-            var layoutViewPath = MvcContext.Get.RootDirectoryRelativePath +
-                GlobalConstants.DirectorySeparator +
-                MvcContext.Get.ViewsFolderName +
-                GlobalConstants.DirectorySeparator +
-                MvcContext.Get.LayoutViewName +
-                GlobalConstants.HtmlFileExtension;
+        //    var layoutViewContent = File.ReadAllText(layoutViewPath);
+        //    var layoutWithView = layoutViewContent.Replace(RenderBodyConstant, renderedHtml);
 
-            if (!File.Exists(layoutViewPath))
-            {
-                throw new FileNotFoundException($"View does not exist at {fullyQualifiedTemplateName}");
-            }
+        //    return layoutWithView;
 
-            var layoutViewContent = File.ReadAllText(layoutViewPath);
-            var layoutWithView = layoutViewContent.Replace(RenderBodyConstant, renderedHtml);
+        //}
 
-            return layoutWithView;
+        //private string RenderHtml(string fullHtml)
+        //{
+        //    if (this.viewData.Any())
+        //    {
+        //        foreach (var viewDataKey in this.viewData.Keys)
+        //        {
+        //            var dynamicDataPlaceholder = $"{{{{{viewDataKey}}}}}";
+        //            if (fullHtml.Contains(dynamicDataPlaceholder))
+        //            {
+        //                fullHtml = fullHtml.Replace(
+        //                    dynamicDataPlaceholder,
+        //                    this.viewData[viewDataKey].ToString());
+        //            }
+        //        }
+        //    }
 
-        }
-
-        private string RenderHtml(string fullHtml)
-        {
-            if (this.viewData.Any())
-            {
-                foreach (var viewDataKey in this.viewData.Keys)
-                {
-                    var dynamicDataPlaceholder = $"{{{{{viewDataKey}}}}}";
-                    if (fullHtml.Contains(dynamicDataPlaceholder))
-                    {
-                        fullHtml = fullHtml.Replace(
-                            dynamicDataPlaceholder,
-                            this.viewData[viewDataKey].ToString());
-                    }
-                }
-            }
-
-            return fullHtml;
-        }
+        //    return fullHtml;
+        //}
     }
 }

@@ -12,8 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\SIS.HTTP\SIS.HTTP.csproj" />
-    <ProjectReference Include="..\..\SIS.WebServer\SIS.WebServer.csproj" />
+    <ProjectReference Include="C:\Users\Lenovo\source\repos\SIS\src\SIS.WebServer\SIS.WebServer.csproj" />
   </ItemGroup>
 
   <ItemGroup>

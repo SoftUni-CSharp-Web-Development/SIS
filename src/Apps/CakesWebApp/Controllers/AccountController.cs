@@ -98,15 +98,15 @@ namespace CakesWebApp.Controllers
                 x.Password == hashedPassword);
 
             if (user == null)
-            {
+            {   
                 return this.BadRequestError("Invalid username or password.");
             }
 
             var cookieContent = this.UserCookieService.GetUserCookie(user.Username);
 
             var response = new RedirectResult("/");
-            var cookie = new HttpCookie(".auth-cakes", cookieContent, 7) { HttpOnly = true };
-            response.Cookies.Add(cookie);
+         //   var cookie = new HttpCookie(".auth-cakes", cookieContent, 7) { HttpOnly = true };
+           // response.Cookies.Add(cookie);
             return response;
         }
 
@@ -118,7 +118,7 @@ namespace CakesWebApp.Controllers
             }
 
             var cookie = request.Cookies.GetCookie(".auth-cakes");
-            cookie.Delete();
+           // cookie.Delete();
             var response = new RedirectResult("/");
             response.Cookies.Add(cookie);
             return response;

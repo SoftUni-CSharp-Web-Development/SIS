@@ -1,9 +1,12 @@
-﻿using System;
-using System.Net.Sockets;
+﻿    using System;
+    using System.IO;
+    using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using SIS.HTTP.Cookies;
 using SIS.HTTP.Enums;
+    using SIS.WebServer.Api;
+
 namespace SIS.WebServer
 {
     using HTTP.Common;
@@ -19,6 +22,8 @@ namespace SIS.WebServer
         private readonly Socket client;
 
         private readonly ServerRoutingTable serverRoutingTable;
+        private readonly IHttpHandler handler;
+        private readonly IHttpHandler resourceHandler;
 
         public ConnectionHandler(
             Socket client,
@@ -29,6 +34,20 @@ namespace SIS.WebServer
 
             this.client = client;
             this.serverRoutingTable = serverRoutingTable;
+        }
+
+
+        public ConnectionHandler(
+            Socket client,
+            IHttpHandler handler,
+            IHttpHandler resourceHandler)
+        {
+            CoreValidator.ThrowIfNull(client, nameof(client));
+            CoreValidator.ThrowIfNull(handler, nameof(handler));
+
+            this.client = client;
+            this.handler = handler;
+            this.resourceHandler = resourceHandler;
         }
 
         private async Task<IHttpRequest> ReadRequest()
@@ -64,14 +83,33 @@ namespace SIS.WebServer
 
         private IHttpResponse HandleRequest(IHttpRequest httpRequest)
         {
-            if (!this.serverRoutingTable.Routes.ContainsKey(httpRequest.RequestMethod)
-                || !this.serverRoutingTable.Routes[httpRequest.RequestMethod].ContainsKey(httpRequest.Path))
+            if (this.serverRoutingTable != null)
             {
-                return new HttpResponse(HttpResponseStatusCode.NotFound);
-            }
+                if (!this.serverRoutingTable.Routes.ContainsKey(httpRequest.RequestMethod)
+                    || !this.serverRoutingTable.Routes[httpRequest.RequestMethod].ContainsKey(httpRequest.Path.ToLower()))
+                {
+                    return this.resourceHandler.Handle(httpRequest);
+                }
 
-            return this.serverRoutingTable.Routes[httpRequest.RequestMethod][httpRequest.Path].Invoke(httpRequest);
+                return this.serverRoutingTable.Routes[httpRequest.RequestMethod][httpRequest.Path.ToLower()].Invoke(httpRequest);
+            }
+            else
+            {
+                return this.handler.Handle(request: httpRequest);
+            }
+           
         }
+
+        /*private IHttpResponse ReturnIfResponse(string path)
+        {
+            if (!File.Exists(path: @"D:/SIS-Cake/SIS/src/IRunes/Resources" + path))
+                return new HttpResponse(HttpResponseStatusCode.NotFound);
+
+            var content = File.ReadAllText(@"D:/SIS-Cake/SIS/src/IRunes/Resources" + path);
+            var bytes = Encoding.UTF8.GetBytes(content);
+            return new InlineResourceResult(bytes, HttpResponseStatusCode.Ok);
+
+        }*/
 
         private async Task PrepareResponse(IHttpResponse httpResponse)
         {
@@ -130,6 +168,7 @@ namespace SIS.WebServer
             {
                 await this.PrepareResponse(new TextResult(e.Message, HttpResponseStatusCode.BadRequest));
             }
+
             catch (Exception e)
             {
                 await this.PrepareResponse(new TextResult(e.Message, HttpResponseStatusCode.InternalServerError));

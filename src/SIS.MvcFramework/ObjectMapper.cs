@@ -26,8 +26,17 @@ namespace SIS.MvcFramework
                 if (sourceProperty?.GetMethod != null)
                 {
                     var sourceValue = sourceProperty.GetMethod.Invoke(source, new object[0]);
-                    var destinationValue = TryParse(sourceValue.ToString(), destinationProperty.PropertyType);
-                    destinationProperty.SetMethod.Invoke(destination, new[] { destinationValue });
+                    
+                    if (sourceValue is IEnumerable<object> || sourceValue is object[])
+                    {
+                        var destinationCollection = sourceValue;
+                        destinationProperty.SetMethod.Invoke(destination, new[] { destinationCollection });
+                    }
+                    else
+                    {
+                        var destinationValue = TryParse(sourceValue.ToString(), destinationProperty.PropertyType);
+                        destinationProperty.SetMethod.Invoke(destination, new[] { destinationValue });
+                    }
                 }
             }
 

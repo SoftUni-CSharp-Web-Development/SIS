@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SIS.HTTP\SIS.HTTP.csproj" />
+    <ProjectReference Include="..\SIS.MvcFramework.Data\SIS.MvcFramework.Data.csproj" />
     <ProjectReference Include="..\SIS.WebServer\SIS.WebServer.csproj" />
   </ItemGroup>
 

@@ -1,5 +1,7 @@
 ﻿using System;
 using CakesWebApp.Controllers;
+using CakesWebApp.Data;
+using Microsoft.EntityFrameworkCore;
 using SIS.HTTP.Enums;
 using SIS.MvcFramework;
 using SIS.MvcFramework.Logger;
@@ -12,13 +14,14 @@ namespace CakesWebApp
     {
         public void Configure()
         {
-        }
 
+        }
         public void ConfigureServices(IServiceCollection collection)
         {
             collection.AddService<IHashService, HashService>();
             collection.AddService<IUserCookieService, UserCookieService>();
             collection.AddService<ILogger>(() => new FileLogger($"log.txt"));
+            collection.AddService<IUserManager, UserManager>();
 
             /*
              * In ASP.NET Core

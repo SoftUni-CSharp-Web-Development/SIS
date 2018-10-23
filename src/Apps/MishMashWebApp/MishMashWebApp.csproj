@@ -16,6 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Views\Channels\Followed.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Views\Channels\Details.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

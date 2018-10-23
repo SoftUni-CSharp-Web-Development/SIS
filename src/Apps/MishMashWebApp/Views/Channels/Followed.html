@@ -1,0 +1,33 @@
+﻿
+<h1 class="text-center text-mishmash">Following</h1>
+<hr class="hr-2 bg-mishmash"/>
+<table class="table w-75 mx-auto table-hover">
+    <thead>
+    <tr class="row">
+        <th class="col-md-1">#</th>
+        <th class="col-md-5">Channel</th>
+        <th class="col-md-1">Type</th>
+        <th class="col-md-2">Followers</th>
+        <th class="col-md-2">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @for(var i = 0; i < Model.FollowedChannels.Count(); i++)
+    {
+        { var channel = Model.FollowedChannels.ToList()[i]; }
+        { var index = i + 1; }
+        <tr class="row">
+            <th class="col-md-1">@index</th>
+            <td class="col-md-5">@channel.Name</td>
+            <td class="col-md-1">@channel.Type</td>
+            <td class="col-md-2">@channel.FollowersCount</td>
+            <td class="col-md-2">
+                <div class="button-holder d-flex justify-content-between">
+                    <a href="/Channels/Unfollow?id=@channel.Id" class="btn bg-mishmash text-white">Unfollow</a>
+                    <a href="/Channels/Details?id=@channel.Id" class="btn bg-mishmash text-white">Details</a>
+                </div>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

@@ -14,6 +14,8 @@ namespace MishMashWebApp.Data
 
         public DbSet<Tag> Tags { get; set; }
 
+        public DbSet<UserInChannel> UserInChannel { get; set; }
+
         public ApplicationDbContext()
         {
         }

@@ -1,27 +1,32 @@
-﻿<h1 class="text-center text-mishmash">Welcome, @User!</h1>
+﻿@if (Model.UserRole == "Admin")
+{
+    <h1 class="text-center text-mishmash">Welcome, Admin-@User!</h1>
+}
+@else
+{
+    <h1 class="text-center text-mishmash">Welcome, @User!</h1>
+}
 
 <h2 class="text-mishmash">Your channels</h2>
 <hr class="hr-2 bg-white text-white" />
 <div class="container-fluid">
     <div class="row justify-content-around">
-        @for(var i = 0; i < 7; i++)
+        @for(var i = 0; i < Model.YourChannels.Count(); i++)
         {
+            { var channel = Model.YourChannels.ToList()[i]; }
             @if (i % 5 == 0 && i > 1)
             {
                 </div>
                 <div class="row justify-content-around mt-3">
             }
             <div class="col-md-2 bg-mishmash text-center text-white">
-                Channel name
+                @channel.Name
                 <hr class="hr-2 bg-white text-white" />
-                Game Channel
+                @channel.Type Channel
                 <hr class="hr-2 bg-white text-white" />
-                4500 Following
+                @channel.FollowersCount Following
                 <hr class="hr-2 bg-white text-white" />
                 Following
-                <hr class="hr-2 bg-white text-white" />
-                <a href="/Channels/Follow?id=1" class="text-white">Follow</a> &nbsp;
-                <a href="/Channels/Details?id=1" class="text-white">Details</a>
             </div>
         }
     </div>
@@ -29,6 +34,52 @@
 
 <h2 class="text-mishmash">Suggested</h2>
 <hr class="hr-2 bg-white text-white" />
+<div class="container-fluid">
+    <div class="row justify-content-around">
+        @for(var i = 0; i < Model.SuggestedChannels.Count(); i++)
+        {
+            { var channel = Model.SuggestedChannels.ToList()[i]; }
+            @if (i % 5 == 0 && i > 1)
+            {
+                </div>
+                <div class="row justify-content-around mt-3">
+            }
+            <div class="col-md-2 bg-mishmash text-center text-white">
+                @channel.Name
+                <hr class="hr-2 bg-white text-white" />
+                @channel.Type Channel
+                <hr class="hr-2 bg-white text-white" />
+                @channel.FollowersCount Following
+                <hr class="hr-2 bg-white text-white" />
+                <a href="/Channels/Follow?id=@channel.Id" class="text-white">Follow</a> &nbsp;
+                <a href="/Channels/Details?id=@channel.Id" class="text-white">Details</a>
+            </div>
+        }
+    </div>
+</div>
 
 <h2 class="text-mishmash">See other</h2>
 <hr class="hr-2 bg-white text-white" />
+<div class="container-fluid">
+    <div class="row justify-content-around">
+        @for(var i = 0; i < Model.SeeOtherChannels.Count(); i++)
+        {
+            { var channel = Model.SeeOtherChannels.ToList()[i]; }
+            @if (i % 5 == 0 && i > 1)
+            {
+                </div>
+                <div class="row justify-content-around mt-3">
+            }
+            <div class="col-md-2 bg-mishmash text-center text-white">
+                @channel.Name
+                <hr class="hr-2 bg-white text-white" />
+                @channel.Type Channel
+                <hr class="hr-2 bg-white text-white" />
+                @channel.FollowersCount Following
+                <hr class="hr-2 bg-white text-white" />
+                <a href="/Channels/Follow?id=@channel.Id" class="text-white">Follow</a> &nbsp;
+                <a href="/Channels/Details?id=@channel.Id" class="text-white">Details</a>
+            </div>
+        }
+    </div>
+</div>

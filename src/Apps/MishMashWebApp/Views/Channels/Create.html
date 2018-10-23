@@ -1,0 +1,45 @@
+﻿<h1 class="text-center text-mishmash">Create Channel</h1>
+<hr class="bg-mishmash w-50 hr-2" />
+
+<form class="mx-auto w-50" method="post" action="/Channels/Create">
+    <div class="form-group">
+        <label for="name" class="text-mishmash">Name</label>
+        <input type="text" class="form-control" id="name" placeholder="Name..." name="name">
+    </div>
+    <div class="form-group">
+        <label for="description" class="text-mishmash">Description</label>
+        <textarea class="form-control" id="description" placeholder="Description..." name="description"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="tags" class="text-mishmash text-center">Tags</label>
+        <input type="text" class="form-control" id="tags" placeholder="Tag1, Tag2, Tag3..." name="tags">
+    </div>
+    <h2 class="text-center text-mishmash">Channel Type</h2>
+    <hr class="bg-mishmash w-50 hr-2" />
+    <div class="row justify-content-around">
+        <div class="col-md-2">
+            <input name="type" id="Game" value="Game" type="radio" />
+            <label for="Game" class="text-mishmash">Game</label>
+        </div>
+        <div class="col-md-2">
+            <input name="type" id="Motivation" value="Motivation" type="radio"/>
+            <label for="Motivation" class="text-mishmash">Motivation</label>
+        </div>
+        <div class="col-md-2">
+            <input name="type" id="Lessqons" value="Lessons" type="radio"/>
+            <label for="Lessons" class="text-mishmash">Lessons</label>
+        </div>
+        <div class="col-md-2">
+            <input name="type" id="Radio" value="Radio" type="radio"/>
+            <label for="Radio" class="text-mishmash">Radio</label>
+        </div>
+        <div class="col-md-2">
+            <input name="type" id="Other" value="Other" type="radio"/>
+            <label for="Other" class="text-mishmash">Other</label>
+        </div>
+    </div>
+    <hr class="bg-mishmash w-50 hr-2" />
+    <div class="button-holder mt-4 d-flex justify-content-center">
+        <button type="submit" class="btn bg-mishmash text-white">Create</button>
+    </div>
+</form>

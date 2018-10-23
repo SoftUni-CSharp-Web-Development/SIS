@@ -7,6 +7,7 @@ using System.Threading;
 using SIS.HTTP.Enums;
 using SIS.HTTP.Requests;
 using SIS.HTTP.Responses;
+using SIS.MvcFramework.Logger;
 using SIS.MvcFramework.Services;
 using SIS.WebServer;
 using SIS.WebServer.Results;
@@ -21,6 +22,10 @@ namespace SIS.MvcFramework
             CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
 
             var dependencyContainer = new ServiceCollection();
+            dependencyContainer.AddService<IHashService, HashService>();
+            dependencyContainer.AddService<IUserCookieService, UserCookieService>();
+            dependencyContainer.AddService<ILogger>(() => new FileLogger($"log.txt"));
+
             application.ConfigureServices(dependencyContainer);
 
             var serverRoutingTable = new ServerRoutingTable();

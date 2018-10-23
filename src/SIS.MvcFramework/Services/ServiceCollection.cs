@@ -59,7 +59,7 @@ namespace SIS.MvcFramework.Services
 
         public void AddService<T>(Func<T> p)
         {
-            this.dependencyContainerWithFunc.Add(typeof(T), () => p());
+            this.dependencyContainerWithFunc[typeof(T)] = () => p();
         }
     }
 }

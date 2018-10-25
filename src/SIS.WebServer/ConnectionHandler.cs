@@ -63,15 +63,36 @@ namespace SIS.WebServer
             return new HttpRequest(result.ToString());
         }
 
-        private IHttpResponse HandleRequest(IHttpRequest httpRequest)
+       private IHttpResponse HandleRequest(IHttpRequest httpRequest)
         {
-            if (!this.serverRoutingTable.Routes.ContainsKey(httpRequest.RequestMethod)
+             if (!this.serverRoutingTable.Routes.ContainsKey(httpRequest.RequestMethod)
                 || !this.serverRoutingTable.Routes[httpRequest.RequestMethod].ContainsKey(httpRequest.Path))
             {
-                return new TextResult($"Route with method {httpRequest.RequestMethod} and path \"{httpRequest.Path}\" not found.", HttpResponseStatusCode.NotFound);
+                return this.ReturnIfResource(httpRequest.Path);
             }
 
             return this.serverRoutingTable.Routes[httpRequest.RequestMethod][httpRequest.Path].Invoke(httpRequest);
+        }
+        
+        private IHttpResponse ReturnIfResource(string path)
+        {
+            path = $"../{Assembly.GetEntryAssembly().GetName(true).Name}/wwwroot/" + path.Split(new[] { "/" }, StringSplitOptions.RemoveEmptyEntries)[1];
+            string fullpath = (Path.GetFullPath(path));
+
+            if (File.Exists(fullpath) && path.EndsWith(".css"))
+            {
+                byte[] resourceFileContent = File.ReadAllBytes(path);
+                return new CssResourceResult(resourceFileContent, HttpResponseStatusCode.Ok);
+            }
+            else if (File.Exists(fullpath) && path.EndsWith(".js"))
+            {
+                byte[] resourceFileContent = File.ReadAllBytes(path);
+                return new CssResourceResult(resourceFileContent, HttpResponseStatusCode.Ok);
+            }
+            else
+            {
+                return new HtmlResult("<h1>Error 404 Not Found!</h1>", HttpResponseStatusCode.NotFound);
+            }
         }
 
         private async Task PrepareResponse(IHttpResponse httpResponse)

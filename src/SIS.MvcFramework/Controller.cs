@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using SIS.HTTP.Cookies;
 using SIS.HTTP.Enums;
@@ -97,9 +98,37 @@ namespace SIS.MvcFramework
 
         protected IHttpResponse BadRequestError(string errorMessage)
         {
-            var viewModel = new ErrorViewModel {Error = errorMessage};
+            var viewModel = new ErrorViewModel { Error = errorMessage };
             var allContent = this.GetViewContent("Error", viewModel);
             this.PrepareHtmlResult(allContent);
+            this.Response.StatusCode = HttpResponseStatusCode.BadRequest;
+            return this.Response;
+        }
+
+        protected IHttpResponse BadRequestErrorWithView(string errorMessage)
+        {
+            return this.BadRequestErrorWithView(errorMessage, (object)null);
+        }
+
+        protected IHttpResponse BadRequestErrorWithView<T>(string errorMessage, T model, string layoutName = "_Layout")
+        {
+            var errorContent = this.GetViewContent("Error", new ErrorViewModel { Error = errorMessage }, null);
+
+            var viewName = this.Request.Path.Trim('/', '\\');
+            if (string.IsNullOrWhiteSpace(viewName))
+            {
+                viewName = "Home/Index";
+            }
+
+            var viewContent = this.GetViewContent(viewName, model, null);
+            var allViewContent = errorContent + Environment.NewLine + viewContent;
+            var errorAndViewContent = this.ViewEngine.GetHtml(viewName, allViewContent, model, this.User);
+
+            var layoutFileContent = System.IO.File.ReadAllText($"Views/{layoutName}.html");
+            var allContent = layoutFileContent.Replace("@RenderBody()", errorAndViewContent);
+            var layoutContent = this.ViewEngine.GetHtml("_Layout", allContent, model, this.User);
+
+            this.PrepareHtmlResult(layoutContent);
             this.Response.StatusCode = HttpResponseStatusCode.BadRequest;
             return this.Response;
         }
@@ -118,10 +147,15 @@ namespace SIS.MvcFramework
             var content = this.ViewEngine.GetHtml(viewName,
                 System.IO.File.ReadAllText("Views/" + viewName + ".html"), model, this.User);
 
-            var layoutFileContent = System.IO.File.ReadAllText($"Views/{layoutName}.html");
-            var allContent = layoutFileContent.Replace("@RenderBody()", content);
-            var layoutContent = this.ViewEngine.GetHtml("_Layout", allContent, model, this.User);
-            return layoutContent;
+            if (layoutName != null)
+            {
+                var layoutFileContent = System.IO.File.ReadAllText($"Views/{layoutName}.html");
+                var allContent = layoutFileContent.Replace("@RenderBody()", content);
+                var layoutContent = this.ViewEngine.GetHtml("_Layout", allContent, model, this.User);
+                return layoutContent;
+            }
+
+            return content;
         }
 
         private void PrepareHtmlResult(string content)

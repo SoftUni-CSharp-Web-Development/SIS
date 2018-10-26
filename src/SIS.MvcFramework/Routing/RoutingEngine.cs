@@ -33,7 +33,7 @@ namespace SIS.MvcFramework.Routing
             var files = Directory.GetFiles(path, "*", SearchOption.AllDirectories);
             foreach (var file in files)
             {
-                var url = file.Replace("\\", "/").Replace("wwwroot", string.Empty);
+                var url = file.Replace("\\", "/").Replace(settings.WwwrootPath, string.Empty);
                 routingTable.Routes[HttpRequestMethod.Get][url] = (request) =>
                 {
                     var content = File.ReadAllText(file);

@@ -39,17 +39,33 @@ namespace SIS.MvcFramework
                 return userName;
             }
         }
-        
-        protected IHttpResponse View(string viewName, string layoutName = "_Layout")
+
+        protected IHttpResponse View(string viewName = null, string layoutName = "_Layout")
         {
-            var allContent = this.GetViewContent(viewName, (object)null, layoutName);
-            this.PrepareHtmlResult(allContent);
-            return this.Response;
+            return this.View(viewName, (object) null, layoutName);
         }
         
-        protected IHttpResponse View<T>(string viewName, T model = null, string layoutName = "_Layout")
+        protected IHttpResponse View<T>(T model = null, string layoutName = "_Layout")
             where T : class
         {
+            return this.View(null, model, layoutName);
+        }
+
+        protected IHttpResponse View<T>(
+            string viewName = null,
+            T model = null,
+            string layoutName = "_Layout")
+            where T : class
+        {
+            if (viewName == null)
+            {
+                viewName = this.Request.Path.Trim('/', '\\');
+                if (string.IsNullOrWhiteSpace(viewName))
+                {
+                    viewName = "Home/Index";
+                }
+            }
+
             var allContent = this.GetViewContent(viewName, model, layoutName);
             this.PrepareHtmlResult(allContent);
             return this.Response;

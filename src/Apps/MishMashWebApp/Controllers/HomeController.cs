@@ -58,7 +58,7 @@ namespace MishMashWebApp.Controllers
             }
             else
             {
-                return this.View("Home/Index");
+                return this.View();
             }
         }
     }

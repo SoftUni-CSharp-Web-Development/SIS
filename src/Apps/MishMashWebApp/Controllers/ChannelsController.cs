@@ -29,7 +29,7 @@ namespace MishMashWebApp.Controllers
                     FollowersCount = x.Followers.Count(),
                 }).FirstOrDefault();
 
-            return this.View("Channels/Details", channelViewModel);
+            return this.View(channelViewModel);
         }
 
         public IHttpResponse Followed()
@@ -52,7 +52,7 @@ namespace MishMashWebApp.Controllers
             var viewModel = new FollowedChannelsViewModel
                 {FollowedChannels = followedChannels};
 
-            return this.View("Channels/Followed", viewModel);
+            return this.View(viewModel);
         }
 
         public IHttpResponse Follow(int id)
@@ -105,7 +105,7 @@ namespace MishMashWebApp.Controllers
                 return this.Redirect("/Users/Login");
             }
 
-            return this.View("Channels/Create");
+            return this.View();
         }
 
         [HttpPost]

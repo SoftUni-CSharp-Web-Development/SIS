@@ -33,7 +33,7 @@ namespace MishMashWebApp.Controllers
 
         public IHttpResponse Login()
         {
-            return this.View("Users/Login");
+            return this.View();
         }
 
         [HttpPost]
@@ -59,7 +59,7 @@ namespace MishMashWebApp.Controllers
 
         public IHttpResponse Register()
         {
-            return this.View("Users/Register");
+            return this.View();
         }
 
         [HttpPost]

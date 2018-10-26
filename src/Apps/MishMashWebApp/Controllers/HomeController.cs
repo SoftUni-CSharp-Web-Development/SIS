@@ -8,7 +8,7 @@ namespace MishMashWebApp.Controllers
 {
     public class HomeController : BaseController
     {
-        [HttpGet("/Home/Index")]
+        [HttpGet]
         public IHttpResponse Index()
         {
             var user = this.Db.Users.FirstOrDefault(x => x.Username == this.User);
@@ -61,12 +61,6 @@ namespace MishMashWebApp.Controllers
             {
                 return this.View("Home/Index");
             }
-        }
-
-        [HttpGet("/")]
-        public IHttpResponse RootIndex()
-        {
-            return this.Index();
         }
     }
 }

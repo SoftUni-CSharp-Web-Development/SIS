@@ -18,7 +18,7 @@ namespace MishMashWebApp.Controllers
             this.hashService = hashService;
         }
 
-        [HttpGet("/Users/Logout")]
+        [HttpGet]
         public IHttpResponse Logout()
         {
             if (!this.Request.Cookies.ContainsCookie(".auth-cakes"))
@@ -32,14 +32,14 @@ namespace MishMashWebApp.Controllers
             return this.Redirect("/");
         }
 
-        [HttpGet("/Users/Login")]
+        [HttpGet]
         public IHttpResponse Login()
         {
             return this.View("Users/Login");
         }
 
-        [HttpPost("/Users/Login")]
-        public IHttpResponse DoLogin(DoLoginInputModel model)
+        [HttpPost]
+        public IHttpResponse Login(DoLoginInputModel model)
         {
             var hashedPassword = this.hashService.Hash(model.Password);
 
@@ -59,14 +59,14 @@ namespace MishMashWebApp.Controllers
             return this.Redirect("/");
         }
 
-        [HttpGet("/Users/Register")]
+        [HttpGet]
         public IHttpResponse Register()
         {
             return this.View("Users/Register");
         }
 
-        [HttpPost("/Users/Register")]
-        public IHttpResponse DoRegister(DoRegisterInputModel model)
+        [HttpPost]
+        public IHttpResponse Register(DoRegisterInputModel model)
         {
             // Validate
             if (string.IsNullOrWhiteSpace(model.Username) || model.Username.Trim().Length < 4)

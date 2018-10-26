@@ -4,7 +4,7 @@ namespace SIS.MvcFramework
 {
     public class HttpGetAttribute : HttpAttribute
     {
-        public HttpGetAttribute(string path)
+        public HttpGetAttribute(string path = null)
             : base(path)
         {
         }

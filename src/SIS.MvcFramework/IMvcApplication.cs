@@ -5,7 +5,7 @@ namespace SIS.MvcFramework
 {
     public interface IMvcApplication
     {
-        void Configure();
+        MvcFrameworkSettings Configure();
 
         void ConfigureServices(IServiceCollection collection);
     }

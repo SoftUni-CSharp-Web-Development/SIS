@@ -8,6 +8,7 @@ using SIS.HTTP.Exceptions;
 using SIS.HTTP.Extensions;
 using SIS.HTTP.Headers;
 using SIS.HTTP.Sessions;
+using System.Net;
 
 namespace SIS.HTTP.Requests
 {
@@ -134,8 +135,8 @@ namespace SIS.HTTP.Requests
                 return;
             }
 
-            string queryString = this.Url
-                .Split(new [] {'?', '#'}, StringSplitOptions.None)[1];
+            string queryString = WebUtility.UrlDecode(this.Url
+                .Split(new [] {'?', '#'}, StringSplitOptions.None)[1]);
 
             if (string.IsNullOrWhiteSpace(queryString))
             {
@@ -165,7 +166,7 @@ namespace SIS.HTTP.Requests
                 return;
             }
 
-            string[] formDataParams = formData.Split(HttpRequestParameterSeparator);
+            string[] formDataParams = WebUtility.UrlDecode(formData).Split(HttpRequestParameterSeparator);
 
             foreach (var formDataParameter in formDataParams)
             {

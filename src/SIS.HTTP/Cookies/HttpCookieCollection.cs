@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Net;
 
 namespace SIS.HTTP.Cookies
 {

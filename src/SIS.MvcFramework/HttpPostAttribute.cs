@@ -1,5 +1,4 @@
-﻿using System;
-using SIS.HTTP.Enums;
+﻿using SIS.HTTP.Enums;
 
 namespace SIS.MvcFramework
 {

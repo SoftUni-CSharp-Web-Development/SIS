@@ -7,7 +7,6 @@ using SIS.HTTP.Enums;
 using SIS.HTTP.Headers;
 using SIS.HTTP.Requests;
 using SIS.HTTP.Responses;
-using SIS.MvcFramework.Logger;
 using SIS.MvcFramework.Services;
 using SIS.WebServer.Results;
 using SIS.WebServer.Routing;

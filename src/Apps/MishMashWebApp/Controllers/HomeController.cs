@@ -2,7 +2,6 @@
 using MishMashWebApp.ViewModels.Channels;
 using MishMashWebApp.ViewModels.Home;
 using SIS.HTTP.Responses;
-using SIS.MvcFramework;
 
 namespace MishMashWebApp.Controllers
 {

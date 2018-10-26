@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using CakesWebApp.Models;
+﻿using CakesWebApp.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace CakesWebApp.Data

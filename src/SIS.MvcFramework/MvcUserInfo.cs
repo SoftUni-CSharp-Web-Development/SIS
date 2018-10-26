@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SIS.MvcFramework
+﻿namespace SIS.MvcFramework
 {
     public class MvcUserInfo
     {

@@ -1,5 +1,4 @@
 ﻿using System;
-using SIS.MvcFramework.Logger;
 
 namespace SIS.MvcFramework.Services
 {

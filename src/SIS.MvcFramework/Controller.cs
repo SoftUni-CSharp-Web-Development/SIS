@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using SIS.HTTP.Cookies;
 using SIS.HTTP.Enums;
 using SIS.HTTP.Headers;
 using SIS.HTTP.Requests;
@@ -24,21 +25,22 @@ namespace SIS.MvcFramework
 
         public IUserCookieService UserCookieService { get; internal set; }
 
-        protected string User
+        public static string GetUserData(
+            IHttpCookieCollection cookieCollection,
+            IUserCookieService cookieService)
         {
-            get
+            if (!cookieCollection.ContainsCookie(".auth-cakes"))
             {
-                if (!this.Request.Cookies.ContainsCookie(".auth-cakes"))
-                {
-                    return null;
-                }
-
-                var cookie = this.Request.Cookies.GetCookie(".auth-cakes");
-                var cookieContent = cookie.Value;
-                var userName = this.UserCookieService.GetUserData(cookieContent);
-                return userName;
+                return null;
             }
+
+            var cookie = cookieCollection.GetCookie(".auth-cakes");
+            var cookieContent = cookie.Value;
+            var userName = cookieService.GetUserData(cookieContent);
+            return userName;
         }
+
+        protected string User => GetUserData(this.Request.Cookies, this.UserCookieService);
 
         protected IHttpResponse View(string viewName = null, string layoutName = "_Layout")
         {

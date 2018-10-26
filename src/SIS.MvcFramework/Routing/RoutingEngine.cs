@@ -4,8 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using SIS.HTTP.Enums;
+using SIS.HTTP.Headers;
 using SIS.HTTP.Requests;
 using SIS.HTTP.Responses;
+using SIS.MvcFramework.Logger;
 using SIS.MvcFramework.Services;
 using SIS.WebServer.Results;
 using SIS.WebServer.Routing;
@@ -21,7 +23,7 @@ namespace SIS.MvcFramework.Routing
             IServiceCollection serviceCollection)
         {
             RegisterStaticFiles(routingTable, settings);
-            RegisterActions(routingTable, application, serviceCollection);
+            RegisterActions(routingTable, application, settings, serviceCollection);
             RegisterDefaultRoute(routingTable);
         }
 
@@ -81,9 +83,13 @@ namespace SIS.MvcFramework.Routing
             }
         }
 
-        private static void RegisterActions(ServerRoutingTable routingTable, IMvcApplication application,
+        private static void RegisterActions(
+            ServerRoutingTable routingTable, 
+            IMvcApplication application,
+            MvcFrameworkSettings settings,
             IServiceCollection serviceCollection)
         {
+            var userCookieService = serviceCollection.CreateInstance<IUserCookieService>();
             var controllers = application.GetType().Assembly.GetTypes()
                 .Where(myType => myType.IsClass
                                  && !myType.IsAbstract
@@ -97,7 +103,7 @@ namespace SIS.MvcFramework.Routing
                 {
                     var httpAttribute = (HttpAttribute) methodInfo.GetCustomAttributes(true)
                         .FirstOrDefault(ca => ca.GetType().IsSubclassOf(typeof(HttpAttribute)));
-
+                    
                     var method = HttpRequestMethod.Get;
                     string path = null;
                     if (httpAttribute != null)
@@ -123,8 +129,25 @@ namespace SIS.MvcFramework.Routing
                         path = "/" + path;
                     }
 
+                    var hasAuthorizeAttribute = methodInfo.GetCustomAttributes(true)
+                        .Any(ca => ca.GetType() == typeof(AuthorizeAttribute));
                     routingTable.Add(method, path,
-                        (request) => ExecuteAction(controller, methodInfo, request, serviceCollection));
+                        (request) =>
+                        {
+                            if (hasAuthorizeAttribute)
+                            {
+                                var userData = Controller.GetUserData(request.Cookies, userCookieService);
+                                if (userData == null)
+                                {
+                                    var response = new HttpResponse();
+                                    response.Headers.Add(new HttpHeader(HttpHeader.Location, settings.LoginPageUrl));
+                                    response.StatusCode = HttpResponseStatusCode.SeeOther; // TODO: Found better?
+                                    return response;
+                                }
+                            }
+
+                            return ExecuteAction(controller, methodInfo, request, serviceCollection);
+                        });
                     Console.WriteLine($"Route registered: {controller.Name}.{methodInfo.Name} => {method} => {path}");
                 }
             }
@@ -144,8 +167,7 @@ namespace SIS.MvcFramework.Routing
             controllerInstance.Request = request;
             controllerInstance.ViewEngine = new ViewEngine.ViewEngine(); // TODO: use serviceCollection
             controllerInstance.UserCookieService = serviceCollection.CreateInstance<IUserCookieService>();
-
-
+            
             var actionParameterObjects = GetActionParameterObjects(methodInfo, request, serviceCollection);
             var httpResponse = methodInfo.Invoke(controllerInstance, actionParameterObjects.ToArray()) as IHttpResponse;
             return httpResponse;

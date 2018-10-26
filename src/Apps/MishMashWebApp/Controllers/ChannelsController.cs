@@ -12,13 +12,9 @@ namespace MishMashWebApp.Controllers
 {
     public class ChannelsController : BaseController
     {
+        [Authorize]
         public IHttpResponse Details(int id)
         {
-            if (this.User == null)
-            {
-                return this.Redirect("/Users/Login");
-            }
-
             var channelViewModel = this.Db.Channels.Where(x => x.Id == id)
                 .Select(x => new ChannelViewModel
                 {
@@ -32,13 +28,9 @@ namespace MishMashWebApp.Controllers
             return this.View(channelViewModel);
         }
 
+        [Authorize]
         public IHttpResponse Followed()
         {
-            if (this.User == null)
-            {
-                return this.Redirect("/Users/Login");
-            }
-
             var followedChannels = this.Db.Channels.Where(
                     x => x.Followers.Any(f => f.User.Username == this.User))
                             .Select(x => new BaseChannelViewModel
@@ -55,14 +47,10 @@ namespace MishMashWebApp.Controllers
             return this.View(viewModel);
         }
 
+        [Authorize]
         public IHttpResponse Follow(int id)
         {
             var user = this.Db.Users.FirstOrDefault(x => x.Username == this.User);
-            if (user == null)
-            {
-                return this.Redirect("/Users/Login");
-            }
-
             if (!this.Db.UserInChannel.Any(
                 x => x.UserId == user.Id && x.ChannelId == id))
             {
@@ -78,14 +66,11 @@ namespace MishMashWebApp.Controllers
             return this.Redirect("/Channels/Followed");
         }
 
+        [Authorize]
         public IHttpResponse Unfollow(int id)
         {
             var user = this.Db.Users.FirstOrDefault(x => x.Username == this.User);
-            if (user == null)
-            {
-                return this.Redirect("/Users/Login");
-            }
-
+            
             var userInChannel = this.Db.UserInChannel.FirstOrDefault(
                 x => x.UserId == user.Id && x.ChannelId == id);
             if (userInChannel != null)
@@ -97,10 +82,11 @@ namespace MishMashWebApp.Controllers
             return this.Redirect("/Channels/Followed");
         }
 
+        [Authorize]
         public IHttpResponse Create()
         {
             var user = this.Db.Users.FirstOrDefault(x => x.Username == this.User);
-            if (user == null || user.Role != Role.Admin)
+            if (user.Role != Role.Admin)
             {
                 return this.Redirect("/Users/Login");
             }
@@ -108,11 +94,12 @@ namespace MishMashWebApp.Controllers
             return this.View();
         }
 
+        [Authorize]
         [HttpPost]
         public IHttpResponse Create(CreateChannelsInputModel model)
         {
             var user = this.Db.Users.FirstOrDefault(x => x.Username == this.User);
-            if (user == null || user.Role != Role.Admin)
+            if (user.Role != Role.Admin)
             {
                 return this.Redirect("/Users/Login");
             }

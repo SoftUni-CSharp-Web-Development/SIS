@@ -42,7 +42,7 @@ namespace SIS.MvcFramework
 
         protected IHttpResponse View(string viewName = null, string layoutName = "_Layout")
         {
-            return this.View(viewName, (object) null, layoutName);
+            return this.View(viewName, (object)null, layoutName);
         }
         
         protected IHttpResponse View<T>(T model = null, string layoutName = "_Layout")

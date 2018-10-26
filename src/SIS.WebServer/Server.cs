@@ -36,10 +36,7 @@ namespace SIS.WebServer
             Console.WriteLine($"Server started at http://{LocalhostIpAddress}:{this.port}");
             while (isRunning)
             {
-                Console.WriteLine("Waiting for client...");
-
                 var client = listener.AcceptSocketAsync().GetAwaiter().GetResult();
-
                 Task.Run(() => Listen(client));
             }
         }

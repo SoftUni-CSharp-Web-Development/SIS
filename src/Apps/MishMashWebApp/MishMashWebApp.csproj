@@ -46,9 +46,6 @@
     <None Update="wwwroot\bootstrap.min.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="wwwroot\js\site.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="wwwroot\reset-css.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

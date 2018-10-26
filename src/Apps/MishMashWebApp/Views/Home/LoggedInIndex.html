@@ -1,13 +1,10 @@
-﻿@if (Model.UserRole == "Admin")
+﻿@if (User.Role == "Admin")
 {
-    <h1 class="text-center text-mishmash">Welcome, Admin-@User!</h1>
-    <div class="text-center">
-        <a class="btn btn-primary" href="/Channels/Create">Create channel</a>
-    </div>
+    <h1 class="text-center text-mishmash">Welcome, Admin-@User.Username!</h1>
 }
 @else
 {
-    <h1 class="text-center text-mishmash">Welcome, @User!</h1>
+    <h1 class="text-center text-mishmash">Welcome, @User.Username!</h1>
 }
 
 <h2 class="text-mishmash">Your channels</h2>

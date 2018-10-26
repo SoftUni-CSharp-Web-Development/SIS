@@ -18,7 +18,7 @@ namespace CakesWebApp.Controllers
         [HttpGet("/hello")]
         public IHttpResponse HelloUser()
         {
-            return this.View("HelloUser", new HelloUserViewModel { Username = this.User });
+            return this.View("HelloUser", new HelloUserViewModel { Username = this.User.Username });
         }
     }
 

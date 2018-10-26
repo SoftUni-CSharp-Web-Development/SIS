@@ -10,7 +10,7 @@
         <div class="col-md-3 col-sm-12">
             <ul class="list-group">
                 <li class="list-group-item"><i class="fas fa-home"></i> <a href="/">Home</a></li>
-                @if (User == null)
+                @if (!User.IsLoggedIn)
                 {
                     <li class="list-group-item"><i class="fas fa-user-check"></i> <a href="/account/login">Login</a></li>
                     <li class="list-group-item"><i class="fas fa-user-plus"></i> <a href="/account/register">Register</a></li>

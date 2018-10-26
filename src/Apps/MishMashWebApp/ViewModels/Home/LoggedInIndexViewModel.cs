@@ -7,8 +7,6 @@ namespace MishMashWebApp.ViewModels.Home
 {
     public class LoggedInIndexViewModel
     {
-        public string UserRole { get; set; }
-
         public IEnumerable<BaseChannelViewModel> YourChannels { get; set; }
 
         public IEnumerable<BaseChannelViewModel> SuggestedChannels { get; set; }

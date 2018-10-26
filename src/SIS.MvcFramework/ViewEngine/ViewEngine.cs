@@ -15,7 +15,7 @@ namespace SIS.MvcFramework.ViewEngine
 {
     public class ViewEngine : IViewEngine
     {
-        public string GetHtml<T>(string viewName, string viewCode, T model, string user = null)
+        public string GetHtml<T>(string viewName, string viewCode, T model, MvcUserInfo user = null)
         {
             var viewTypeName = viewName.Replace("/", "_") + "View";
             var csharpMethodBody = this.GenerateCSharpMethodBody(viewCode);
@@ -24,13 +24,14 @@ using System;
 using System.Linq;
 using System.Text;
 using System.Collections.Generic;
+using SIS.MvcFramework;
 using SIS.MvcFramework.ViewEngine;
 using " + typeof(T).Namespace + @";
 namespace MyAppViews
 {
     public class " + viewTypeName + " : IView<" + typeof(T).FullName.Replace("+", ".") + @">
     {
-        public string GetHtml(" + typeof(T).FullName.Replace("+", ".") + @" model, string user)
+        public string GetHtml(" + typeof(T).FullName.Replace("+", ".") + @" model, MvcUserInfo user)
         {
             StringBuilder html = new StringBuilder();
             var Model = model;
@@ -121,7 +122,7 @@ namespace MyAppViews
                     while (htmlLine.Contains("@"))
                     {
                         var specialSymbolIndex = htmlLine.IndexOf("@", StringComparison.InvariantCulture);
-                        var endOfCode = new Regex(@"[\s&\+=<\\!]+").Match(htmlLine, specialSymbolIndex).Index;
+                        var endOfCode = new Regex(@"[\s&\+=()<\\!]+").Match(htmlLine, specialSymbolIndex).Index;
                         string expression = null;
                         if (endOfCode == 0 || endOfCode == -1)
                         {

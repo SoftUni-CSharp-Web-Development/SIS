@@ -23,13 +23,19 @@
                         <li class="nav-item">
                             <a class="nav-link nav-link-white active" href="/">Home</a>
                         </li>
-                        @if (User != null)
+                        @if (User.IsLoggedIn)
                         {
                             <li class="nav-item">
                                 <a class="nav-link nav-link-white active" href="/Channels/Followed">My Channels</a>
                             </li>
+                            @if (User.Role == "Admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link nav-link-white active" href="/Channels/Create">Create channel</a>
+                                </li>
+                            }
                             <li class="nav-item">
-                                <a class="nav-link nav-link-white active" href="/Users/Logout">Logout</a>
+                                <a class="nav-link nav-link-white active" href="/Users/Logout">Logout (@User.Info)</a>
                             </li>
                         }
                         @else

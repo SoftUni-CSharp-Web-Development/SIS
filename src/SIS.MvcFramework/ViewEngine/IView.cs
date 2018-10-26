@@ -2,6 +2,6 @@
 {
     public interface IView<T>
     {
-        string GetHtml(T model, string user);
+        string GetHtml(T model, MvcUserInfo user);
     }
 }

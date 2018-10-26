@@ -37,7 +37,7 @@ namespace MishMashWebApp.Controllers
         public IHttpResponse Followed()
         {
             var followedChannels = this.Db.Channels.Where(
-                    x => x.Followers.Any(f => f.User.Username == this.User))
+                    x => x.Followers.Any(f => f.User.Username == this.User.Username))
                             .Select(x => new BaseChannelViewModel
                             {
                                 Id = x.Id,
@@ -55,7 +55,7 @@ namespace MishMashWebApp.Controllers
         [Authorize]
         public IHttpResponse Follow(int id)
         {
-            var user = this.Db.Users.FirstOrDefault(x => x.Username == this.User);
+            var user = this.Db.Users.FirstOrDefault(x => x.Username == this.User.Username);
             if (!this.Db.UserInChannel.Any(
                 x => x.UserId == user.Id && x.ChannelId == id))
             {
@@ -74,7 +74,7 @@ namespace MishMashWebApp.Controllers
         [Authorize]
         public IHttpResponse Unfollow(int id)
         {
-            var user = this.Db.Users.FirstOrDefault(x => x.Username == this.User);
+            var user = this.Db.Users.FirstOrDefault(x => x.Username == this.User.Username);
             
             var userInChannel = this.Db.UserInChannel.FirstOrDefault(
                 x => x.UserId == user.Id && x.ChannelId == id);
@@ -90,7 +90,7 @@ namespace MishMashWebApp.Controllers
         [Authorize]
         public IHttpResponse Create()
         {
-            var user = this.Db.Users.FirstOrDefault(x => x.Username == this.User);
+            var user = this.Db.Users.FirstOrDefault(x => x.Username == this.User.Username);
             if (user.Role != Role.Admin)
             {
                 return this.Redirect("/Users/Login");
@@ -103,7 +103,7 @@ namespace MishMashWebApp.Controllers
         [HttpPost]
         public IHttpResponse Create(CreateChannelsInputModel model)
         {
-            var user = this.Db.Users.FirstOrDefault(x => x.Username == this.User);
+            var user = this.Db.Users.FirstOrDefault(x => x.Username == this.User.Username);
             if (user.Role != Role.Admin)
             {
                 return this.Redirect("/Users/Login");

@@ -26,22 +26,30 @@ namespace SIS.MvcFramework
 
         public IUserCookieService UserCookieService { get; internal set; }
 
-        public static string GetUserData(
+        public static MvcUserInfo GetUserData(
             IHttpCookieCollection cookieCollection,
             IUserCookieService cookieService)
         {
             if (!cookieCollection.ContainsCookie(".auth-cakes"))
             {
-                return null;
+                return new MvcUserInfo();
             }
 
             var cookie = cookieCollection.GetCookie(".auth-cakes");
             var cookieContent = cookie.Value;
-            var userName = cookieService.GetUserData(cookieContent);
-            return userName;
+
+            try
+            {
+                var userName = cookieService.GetUserData(cookieContent);
+                return userName;
+            }
+            catch (Exception)
+            {
+                return new MvcUserInfo();
+            }
         }
 
-        protected string User => GetUserData(this.Request.Cookies, this.UserCookieService);
+        protected MvcUserInfo User => GetUserData(this.Request.Cookies, this.UserCookieService);
 
         protected IHttpResponse View(string viewName = null, string layoutName = "_Layout")
         {

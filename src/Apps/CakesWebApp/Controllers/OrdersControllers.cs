@@ -13,7 +13,7 @@ namespace CakesWebApp.Controllers
         [HttpPost("/orders/add")]
         public IHttpResponse Add(int productId)
         {
-            var userId = this.Db.Users.FirstOrDefault(x => x.Username == this.User)?.Id;
+            var userId = this.Db.Users.FirstOrDefault(x => x.Username == this.User.Name)?.Id;
             if (userId == null)
             {
                 return this.BadRequestError("Please login first.");
@@ -49,14 +49,14 @@ namespace CakesWebApp.Controllers
         public IHttpResponse GetById(int id)
         {
             var order = this.Db.Orders.FirstOrDefault(x => x.Id == id
-                                && x.User.Username == this.User);
+                                && x.User.Username == this.User.Name);
 
             if (order == null)
             {
                 return this.BadRequestError("Invalid order id.");
             }
 
-            var lastOrderId = this.Db.Orders.Where(x => x.User.Username == this.User)
+            var lastOrderId = this.Db.Orders.Where(x => x.User.Username == this.User.Name)
                 .OrderByDescending(x => x.Id).Select(x => x.Id).FirstOrDefault();
 
             var viewModel = new GetByIdViewModel();
@@ -77,7 +77,7 @@ namespace CakesWebApp.Controllers
         [HttpGet("/orders/list")]
         public IHttpResponse List()
         {
-            var orders = this.Db.Orders.Where(x => x.User.Username == this.User)
+            var orders = this.Db.Orders.Where(x => x.User.Username == this.User.Name)
                 .Select(x => new OrderInListViewModel
                 {
                     Id = x.Id,
@@ -92,14 +92,14 @@ namespace CakesWebApp.Controllers
         [HttpPost("/orders/finish")]
         public IHttpResponse Finish(int orderId)
         {
-            var userId = this.Db.Users.FirstOrDefault(x => x.Username == this.User)?.Id;
+            var userId = this.Db.Users.FirstOrDefault(x => x.Username == this.User.Name)?.Id;
             if (userId == null)
             {
                 return this.BadRequestError("Please login first.");
             }
 
             // Validate that the current user has permissions to finish this order
-            if (!this.Db.Orders.Any(x => x.Id == orderId && x.User.Username == this.User))
+            if (!this.Db.Orders.Any(x => x.Id == orderId && x.User.Username == this.User.Name))
             {
                 return this.BadRequestError("Order not found.");
             }

@@ -11,14 +11,14 @@ namespace MishMashWebApp.Controllers
         [HttpGet("/Home/Index")]
         public IHttpResponse Index()
         {
-            var user = this.Db.Users.FirstOrDefault(x => x.Username == this.User);
+            var user = this.Db.Users.FirstOrDefault(x => x.Username == this.User.Name);
             if (user != null)
             {
                 var viewModel = new LoggedInIndexViewModel();
                 viewModel.UserRole = user.Role.ToString();
 
                 viewModel.YourChannels = this.Db.Channels.Where(
-                        x => x.Followers.Any(f => f.User.Username == this.User))
+                        x => x.Followers.Any(f => f.User.Username == this.User.Name))
                     .Select(x => new BaseChannelViewModel
                     {
                         Id = x.Id,
@@ -28,11 +28,11 @@ namespace MishMashWebApp.Controllers
                     }).ToList();
 
                 var followedChannelsTags = this.Db.Channels.Where(
-                        x => x.Followers.Any(f => f.User.Username == this.User))
+                        x => x.Followers.Any(f => f.User.Username == this.User.Name))
                     .SelectMany(x => x.Tags.Select(t => t.TagId)).ToList();
 
                 viewModel.SuggestedChannels = this.Db.Channels.Where(
-                    x => !x.Followers.Any(f => f.User.Username == this.User) &&
+                    x => !x.Followers.Any(f => f.User.Username == this.User.Name) &&
                          x.Tags.Any(t => followedChannelsTags.Contains(t.TagId)))
                     .Select(x => new BaseChannelViewModel
                     {

@@ -11,6 +11,9 @@ namespace SIS.MvcFramework
 {
     public abstract class Controller
     {
+        protected const string SESSION_KEY = "username";
+        protected const string AUTH_COOKIE_KEY = ".auth-cakes";
+
         protected Controller()
         {
             this.Response = new HttpResponse {StatusCode = HttpResponseStatusCode.Ok};
@@ -24,22 +27,30 @@ namespace SIS.MvcFramework
 
         public IUserCookieService UserCookieService { get; internal set; }
 
-        protected string User
+        protected UserModel User
         {
             get
             {
-                if (!this.Request.Cookies.ContainsCookie(".auth-cakes"))
+                if (!this.Request.Session.ContainsParameter(SESSION_KEY)
+                    || !this.Request.Cookies.ContainsCookie(AUTH_COOKIE_KEY))
                 {
-                    return null;
+                    return new UserModel();
                 }
 
-                var cookie = this.Request.Cookies.GetCookie(".auth-cakes");
+                var cookie = this.Request.Cookies.GetCookie(AUTH_COOKIE_KEY);
                 var cookieContent = cookie.Value;
                 var userName = this.UserCookieService.GetUserData(cookieContent);
-                return userName;
+
+                var model = Request.Session.GetParameter(SESSION_KEY);
+
+                var role = model.GetType().GetProperty("Role");
+                var roleValue = role.GetValue(model);
+
+                var userModel = new UserModel { Name = userName, Role = roleValue.ToString(), Exist = true };
+                return userModel;
             }
         }
-        
+
         protected IHttpResponse View(string viewName, string layoutName = "_Layout")
         {
             var allContent = this.GetViewContent(viewName, (object)null, layoutName);

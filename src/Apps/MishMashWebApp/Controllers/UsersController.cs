@@ -6,6 +6,7 @@ using SIS.HTTP.Cookies;
 using SIS.HTTP.Responses;
 using SIS.MvcFramework;
 using SIS.MvcFramework.Services;
+using SIS.MvcFramework.ViewEngine;
 
 namespace MishMashWebApp.Controllers
 {
@@ -25,6 +26,8 @@ namespace MishMashWebApp.Controllers
             {
                 return this.Redirect("/");
             }
+
+            this.Request.Session.ClearParameters();
 
             var cookie = this.Request.Cookies.GetCookie(".auth-cakes");
             cookie.Delete();
@@ -51,6 +54,9 @@ namespace MishMashWebApp.Controllers
             {
                 return this.BadRequestError("Invalid username or password.");
             }
+
+            var userModel = new UserModel { Name = user.Username, Role = user.Role.ToString(), Exist = true };
+            this.Request.Session.AddParameter(SESSION_KEY, userModel);
 
             var cookieContent = this.UserCookieService.GetUserCookie(user.Username);
 

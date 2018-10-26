@@ -18,7 +18,6 @@ namespace MishMashWebApp.Controllers
             this.hashService = hashService;
         }
 
-        [HttpGet]
         public IHttpResponse Logout()
         {
             if (!this.Request.Cookies.ContainsCookie(".auth-cakes"))
@@ -32,7 +31,6 @@ namespace MishMashWebApp.Controllers
             return this.Redirect("/");
         }
 
-        [HttpGet]
         public IHttpResponse Login()
         {
             return this.View("Users/Login");
@@ -59,7 +57,6 @@ namespace MishMashWebApp.Controllers
             return this.Redirect("/");
         }
 
-        [HttpGet]
         public IHttpResponse Register()
         {
             return this.View("Users/Register");

@@ -8,7 +8,6 @@ namespace MishMashWebApp.Controllers
 {
     public class HomeController : BaseController
     {
-        [HttpGet]
         public IHttpResponse Index()
         {
             var user = this.Db.Users.FirstOrDefault(x => x.Username == this.User);

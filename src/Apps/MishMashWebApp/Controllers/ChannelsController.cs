@@ -12,7 +12,6 @@ namespace MishMashWebApp.Controllers
 {
     public class ChannelsController : BaseController
     {
-        [HttpGet]
         public IHttpResponse Details(int id)
         {
             if (this.User == null)
@@ -33,7 +32,6 @@ namespace MishMashWebApp.Controllers
             return this.View("Channels/Details", channelViewModel);
         }
 
-        [HttpGet]
         public IHttpResponse Followed()
         {
             if (this.User == null)
@@ -57,7 +55,6 @@ namespace MishMashWebApp.Controllers
             return this.View("Channels/Followed", viewModel);
         }
 
-        [HttpGet]
         public IHttpResponse Follow(int id)
         {
             var user = this.Db.Users.FirstOrDefault(x => x.Username == this.User);
@@ -81,7 +78,6 @@ namespace MishMashWebApp.Controllers
             return this.Redirect("/Channels/Followed");
         }
 
-        [HttpGet]
         public IHttpResponse Unfollow(int id)
         {
             var user = this.Db.Users.FirstOrDefault(x => x.Username == this.User);
@@ -101,7 +97,6 @@ namespace MishMashWebApp.Controllers
             return this.Redirect("/Channels/Followed");
         }
 
-        [HttpGet]
         public IHttpResponse Create()
         {
             var user = this.Db.Users.FirstOrDefault(x => x.Username == this.User);

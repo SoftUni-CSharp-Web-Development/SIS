@@ -154,7 +154,15 @@ namespace SIS.HTTP.Requests
                 string[] parameterArguments = queryParameter
                     .Split('=', StringSplitOptions.RemoveEmptyEntries);
 
-                this.QueryData.Add(parameterArguments[0], parameterArguments[1]);
+                string parameterKey = string.Empty;
+                string parameterValue = string.Empty;
+                if (parameterArguments.Length > 2)
+                {
+                    parameterKey = parameterArguments[0];
+                    parameterValue = parameterArguments[1];
+                }
+
+                this.QueryData[parameterKey] = parameterValue;
             }
         }
 
@@ -172,7 +180,15 @@ namespace SIS.HTTP.Requests
                 string[] parameterArguments = formDataParameter
                     .Split(HttpRequestParameterNameValueSeparator, StringSplitOptions.RemoveEmptyEntries);
 
-                this.FormData.Add(parameterArguments[0], parameterArguments[1]);
+                string parameterKey = string.Empty;
+                string parameterValue = string.Empty;
+                if (parameterArguments.Length > 2)
+                {
+                    parameterKey = parameterArguments[0];
+                    parameterValue = parameterArguments[1];
+                }
+
+                this.FormData[parameterKey] = parameterValue;
             }
         }
 

@@ -204,6 +204,7 @@ namespace SIS.Framework.Routers
                 {
                     var mappedActionParameter = new object();
                     mappedActionParameter = this.ProcessPrimitiveParameter(actionParameter, request);
+                    mappedActionParameters[i] = mappedActionParameter;
                     if (mappedActionParameter == null)
                     {
                         break;

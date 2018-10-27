@@ -156,7 +156,7 @@ namespace SIS.HTTP.Requests
 
                 string parameterKey = string.Empty;
                 string parameterValue = string.Empty;
-                if (parameterArguments.Length > 2)
+                if (parameterArguments.Length >= 2)
                 {
                     parameterKey = parameterArguments[0];
                     parameterValue = parameterArguments[1];
@@ -182,7 +182,7 @@ namespace SIS.HTTP.Requests
 
                 string parameterKey = string.Empty;
                 string parameterValue = string.Empty;
-                if (parameterArguments.Length > 2)
+                if (parameterArguments.Length >= 2)
                 {
                     parameterKey = parameterArguments[0];
                     parameterValue = parameterArguments[1];

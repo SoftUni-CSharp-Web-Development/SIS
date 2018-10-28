@@ -136,7 +136,7 @@ namespace SIS.MvcFramework.Routing
                             if (hasAuthorizeAttribute)
                             {
                                 var userData = Controller.GetUserData(request.Cookies, userCookieService);
-                                if (userData == null)
+                                if (userData.Username == null)
                                 {
                                     var response = new HttpResponse();
                                     response.Headers.Add(new HttpHeader(HttpHeader.Location, settings.LoginPageUrl));

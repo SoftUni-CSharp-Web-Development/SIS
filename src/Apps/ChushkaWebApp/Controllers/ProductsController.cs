@@ -82,5 +82,89 @@ namespace ChushkaWebApp.Controllers
 
             return this.Redirect("/Products/Details?id=" + product.Id);
         }
+
+        [Authorize("Admin")]
+        public IHttpResponse Edit(int id)
+        {
+            var viewModel = this.Db.Products
+                .Select(x => new UpdateDeleteProductInputModel()
+                {
+                    Type = x.Type.ToString(),
+                    Name = x.Name,
+                    Id = x.Id,
+                    Price = x.Price,
+                    Description = x.Description,
+                })
+                .FirstOrDefault(x => x.Id == id);
+            if (viewModel == null)
+            {
+                return this.BadRequestError("Invalid product id.");
+            }
+
+            return this.View(viewModel);
+        }
+
+        [Authorize("Admin")]
+        [HttpPost]
+        public IHttpResponse Edit(UpdateDeleteProductInputModel model)
+        {
+            var product = this.Db.Products.FirstOrDefault(x => x.Id == model.Id);
+            if (product == null)
+            {
+                return this.BadRequestError("Product not found.");
+            }
+
+            if (!Enum.TryParse(model.Type, out ProductType type))
+            {
+                return this.BadRequestError("Invalid product type.");
+            }
+
+            product.Type = type;
+            product.Description = model.Description;
+            product.Name = model.Name;
+            product.Price = model.Price;
+
+            this.Db.SaveChanges();
+
+            return this.Redirect("/Products/Details?id=" + product.Id);
+        }
+
+        [Authorize("Admin")]
+        public IHttpResponse Delete(int id)
+        {
+            var viewModel = this.Db.Products
+                .Select(x => new UpdateDeleteProductInputModel()
+                {
+                    Type = x.Type.ToString(),
+                    Name = x.Name,
+                    Id = x.Id,
+                    Price = x.Price,
+                    Description = x.Description,
+                })
+                .FirstOrDefault(x => x.Id == id);
+            if (viewModel == null)
+            {
+                return this.BadRequestError("Invalid product id.");
+            }
+
+            return this.View(viewModel);
+
+        }
+
+        [Authorize("Admin")]
+        [HttpPost]
+        public IHttpResponse Delete(int id, string name)
+        {
+            var product = this.Db.Products.FirstOrDefault(x => x.Id == id);
+            if (product == null)
+            {
+                return this.Redirect("/");
+            }
+
+            this.Db.Remove(product);
+            this.Db.SaveChanges();
+
+            return this.Redirect("/");
+        }
     }
 }

@@ -16,25 +16,15 @@
     <h4 class="text-center">Product type</h4>
     <hr class="bg-secondary w-50" />
     <div class="row justify-content-around">
-        <div class="col-md-2">
-            <input id="typeFood" type="radio" name="type" value="Food"/>
-            <label for="typeFood">Food</label>
-        </div>
-        <div class="col-md-2">
-            <input id="typeDomestic" type="radio" name="type" value="Domestic"/>
-            <label for="typeDomestic">Domestic</label>
-        </div>
-        <div class="col-md-2">
-            <input id="typeHealth" type="radio" name="type" value="Health"/>
-            <label for="typeHealth">Health</label>
-        </div>
-        <div class="col-md-2">
-            <input id="typeCosmetic" type="radio" name="type" value="Cosmetic"/>
-            <label for="typeCosmetic">Cosmetic</label>
-        </div>
-        <div class="col-md-2">
-            <input id="typeOther" type="radio" name="type" value="Other"/>
-            <label for="typeOther">Other</label>
+        <div class="row justify-content-around">
+            { var types = new[] { "Food", "Domestic", "Health", "Cosmetic", "Other" }; }
+            @foreach(var type in types)
+            {
+                <div class="col-md-2">
+                    <input id="type@type" type="radio" name="type" value="@type" />
+                    <label for="type@type">@type</label>
+                </div>
+            }
         </div>
     </div>
     <hr class="bg-secondary w-50" />

@@ -128,15 +128,17 @@ namespace SIS.MvcFramework.Routing
                         path = "/" + path;
                     }
 
-                    var hasAuthorizeAttribute = methodInfo.GetCustomAttributes(true)
-                        .Any(ca => ca.GetType() == typeof(AuthorizeAttribute));
+                    var authorizeAttribute = methodInfo.GetCustomAttributes(true)
+                        .FirstOrDefault(ca => ca.GetType() == typeof(AuthorizeAttribute)) as AuthorizeAttribute;
                     routingTable.Add(method, path,
                         (request) =>
                         {
-                            if (hasAuthorizeAttribute)
+                            if (authorizeAttribute != null)
                             {
                                 var userData = Controller.GetUserData(request.Cookies, userCookieService);
-                                if (userData == null)
+                                if (userData == null || !userData.IsLoggedIn
+                                    || (authorizeAttribute.RoleName != null
+                                        && authorizeAttribute.RoleName != userData.Role))
                                 {
                                     var response = new HttpResponse();
                                     response.Headers.Add(new HttpHeader(HttpHeader.Location, settings.LoginPageUrl));

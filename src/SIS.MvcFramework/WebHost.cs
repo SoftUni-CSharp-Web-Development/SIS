@@ -25,7 +25,6 @@ namespace SIS.MvcFramework
             var routingEngine = new RoutingEngine();
             routingEngine.RegisterRoutes(serverRoutingTable, application, settings, dependencyContainer);
 
-
             var server = new Server(80, serverRoutingTable);
             server.Run();
         }

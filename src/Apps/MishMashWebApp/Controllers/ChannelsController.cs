@@ -84,28 +84,16 @@ namespace MishMashWebApp.Controllers
             return this.Redirect("/Channels/Followed");
         }
 
-        [Authorize]
+        [Authorize("Admin")]
         public IHttpResponse Create()
         {
-            var user = this.Db.Users.FirstOrDefault(x => x.Username == this.User.Username);
-            if (user.Role != Role.Admin)
-            {
-                return this.Redirect("/Users/Login");
-            }
-
             return this.View();
         }
 
-        [Authorize]
+        [Authorize(nameof(Role.Admin))]
         [HttpPost]
         public IHttpResponse Create(CreateChannelsInputModel model)
         {
-            var user = this.Db.Users.FirstOrDefault(x => x.Username == this.User.Username);
-            if (user.Role != Role.Admin)
-            {
-                return this.Redirect("/Users/Login");
-            }
-
             if (!Enum.TryParse(model.Type, true, out ChannelType type))
             {
                 return this.BadRequestErrorWithView("Invalid channel type.");

@@ -1,6 +1,14 @@
 ﻿<div class="container-fluid text-center">
-    <h2>Greetings, @User.Info!</h2>
-    <h4>Feel free to view and order any of our products.</h4>
+    @if (User.Role == "Admin")
+    {
+        <h2>Greetings, admin!</h2>
+        <h4>Enjoy your work today.</h4>
+    }
+    @else
+    {
+        <h2>Greetings, @User.Info!</h2>
+        <h4>Feel free to view and order any of our products.</h4>
+    }
 </div>
 <hr class="hr-2 bg-dark" />
 <div class="container-fluid">

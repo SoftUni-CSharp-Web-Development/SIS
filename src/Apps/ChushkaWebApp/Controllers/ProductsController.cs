@@ -53,5 +53,34 @@ namespace ChushkaWebApp.Controllers
 
             return this.Redirect("/");
         }
+
+        [Authorize("Admin")]
+        public IHttpResponse Create()
+        {
+            return this.View();
+        }
+
+        [Authorize("Admin")]
+        [HttpPost]
+        public IHttpResponse Create(CreateProductInputModel model)
+        {
+            if (!Enum.TryParse(model.Type, out ProductType type))
+            {
+                return this.BadRequestErrorWithView("Invalid type.");
+            }
+
+            var product = new Product
+            {
+                Description = model.Description,
+                Name = model.Name,
+                Price = model.Price,
+                Type = type,
+            };
+
+            this.Db.Products.Add(product);
+            this.Db.SaveChanges();
+
+            return this.Redirect("/Products/Details?id=" + product.Id);
+        }
     }
 }

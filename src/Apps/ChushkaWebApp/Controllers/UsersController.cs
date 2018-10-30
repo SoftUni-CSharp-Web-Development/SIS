@@ -18,6 +18,7 @@ namespace ChushkaWebApp.Controllers
             this.hashService = hashService;
         }
 
+        [Authorize]
         public IHttpResponse Logout()
         {
             if (!this.Request.Cookies.ContainsCookie(".auth-cakes"))
@@ -33,6 +34,11 @@ namespace ChushkaWebApp.Controllers
 
         public IHttpResponse Login()
         {
+            if (this.User.IsLoggedIn)
+            {
+                return this.Redirect("/");
+            }
+
             return this.View();
         }
 
@@ -65,6 +71,11 @@ namespace ChushkaWebApp.Controllers
 
         public IHttpResponse Register()
         {
+            if (this.User.IsLoggedIn)
+            {
+                return this.Redirect("/");
+            }
+
             return this.View();
         }
 

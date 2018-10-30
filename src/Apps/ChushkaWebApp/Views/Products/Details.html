@@ -15,4 +15,9 @@
 <h3 class="text-center">Actions</h3>
 <div class="product-action-holder mt-4 d-flex justify-content-around">
     <a class="btn chushka-bg-color" href="/products/order?id=@Model.Id">Order</a>
+    @if (User.Role == "Admin")
+    {
+        <a class="btn chushka-bg-color" href="/products/edit?id=@Model.Id">Edit</a>
+        <a class="btn chushka-bg-color" href="/products/delete?id=@Model.Id">Delete</a>
+    }
 </div>

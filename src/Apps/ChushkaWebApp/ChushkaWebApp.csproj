@@ -24,6 +24,9 @@
     <None Update="Views\Home\IndexLoggedIn.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Views\Products\Create.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Views\Products\Details.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

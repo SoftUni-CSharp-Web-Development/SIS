@@ -35,7 +35,7 @@ namespace SIS.MvcFramework.Routing
             foreach (var file in files)
             {
                 var url = file.Replace("\\", "/").Replace(settings.WwwrootPath, string.Empty);
-                routingTable.Routes[HttpRequestMethod.Get][url] = (request) =>
+                routingTable.Add(HttpRequestMethod.Get, url, (request) =>
                 {
                     var content = File.ReadAllText(file);
                     var contentType = "text/plain";
@@ -65,18 +65,18 @@ namespace SIS.MvcFramework.Routing
                     }
 
                     return new TextResult(content, HttpResponseStatusCode.Ok, contentType);
-                };
+                });
                 Console.WriteLine($"Content registered: {file} => {HttpRequestMethod.Get} => {url}");
             }
         }
 
         private static void RegisterDefaultRoute(ServerRoutingTable routingTable)
         {
-            if (!routingTable.Routes[HttpRequestMethod.Get].ContainsKey("/")
-                && routingTable.Routes[HttpRequestMethod.Get].ContainsKey("/Home/Index"))
+            if (!routingTable.Contains(HttpRequestMethod.Get, "/")
+                && routingTable.Contains(HttpRequestMethod.Get, "/Home/Index"))
             {
-                routingTable.Routes[HttpRequestMethod.Get]["/"] = (request) =>
-                    routingTable.Routes[HttpRequestMethod.Get]["/Home/Index"](request);
+                routingTable.Add(HttpRequestMethod.Get, "/", (request) =>
+                    routingTable.Get(HttpRequestMethod.Get, "/Home/Index")(request));
 
                 Console.WriteLine($"Route registered: reuse /Home/Index => {HttpRequestMethod.Get} => /");
             }

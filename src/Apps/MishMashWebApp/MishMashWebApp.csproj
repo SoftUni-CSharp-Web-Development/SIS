@@ -28,7 +28,7 @@
     <None Update="Views\Error.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Views\Home\LoggedInIndex.html">
+    <None Update="Views\Home\LoggedIn-Index.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Views\Home\Index.html">

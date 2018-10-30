@@ -14,7 +14,7 @@ namespace SIS.MvcFramework.ViewEngine
     {
         public string GetHtml<T>(string viewName, string viewCode, T model, MvcUserInfo user = null)
         {
-            var viewTypeName = viewName.Replace("/", "_") + "View";
+            var viewTypeName = viewName.Replace("/", "_").Replace("-", "_").Replace(".", "_") + "View";
             var csharpMethodBody = this.GenerateCSharpMethodBody(viewCode);
             var viewCodeAsCSharpCode = @"
 using System;

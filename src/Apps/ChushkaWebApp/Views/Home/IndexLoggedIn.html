@@ -1,0 +1,27 @@
+﻿<div class="container-fluid text-center">
+    <h2>Greetings, @User.Info!</h2>
+    <h4>Feel free to view and order any of our products.</h4>
+</div>
+<hr class="hr-2 bg-dark" />
+<div class="container-fluid">
+    <div class="row justify-content-around mb-3">
+    @for(int i = 0; i < Model.Products.Count(); i++)
+    {
+        { var product = Model.Products.ToList()[i]; }
+        @if (i > 0 && i % 5 == 0)
+        {
+            </div>
+            <div class="row justify-content-around mb-3">
+        }
+        <div class="col-md-2 p-1 chushka-bg-color rounded-top rounded-bottom">
+            <h5 class="text-center mt-3"><a href="/products/details?id=@product.Id" class="col-md-2">@product.Name</a></h5>
+            <hr class="hr-1 bg-white"/>
+            <p class="text-white text-center">
+                @product.ShortDescription
+            </p>
+            <hr class="hr-1 bg-white"/>
+            <h6 class="text-center text-white mb-3">$@product.Price</h6>
+        </div>
+    }
+    </div>
+</div>

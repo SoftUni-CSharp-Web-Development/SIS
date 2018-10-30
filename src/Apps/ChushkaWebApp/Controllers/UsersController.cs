@@ -54,7 +54,7 @@ namespace ChushkaWebApp.Controllers
             {
                 Username = user.Username,
                 Role = user.Role.ToString(),
-                Info = user.Email,
+                Info = user.FullName,
             };
             var cookieContent = this.UserCookieService.GetUserCookie(mvcUser);
 

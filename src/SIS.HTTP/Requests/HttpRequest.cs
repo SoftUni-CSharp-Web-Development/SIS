@@ -170,7 +170,7 @@ namespace SIS.HTTP.Requests
             foreach (var formDataParameter in formDataParams)
             {
                 string[] parameterArguments = formDataParameter
-                    .Split(HttpRequestParameterNameValueSeparator, StringSplitOptions.RemoveEmptyEntries);
+                    .Split(HttpRequestParameterNameValueSeparator);
 
                 this.FormData.Add(parameterArguments[0], parameterArguments[1]);
             }

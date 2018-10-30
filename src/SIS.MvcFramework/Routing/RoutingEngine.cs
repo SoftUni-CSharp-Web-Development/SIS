@@ -31,6 +31,11 @@ namespace SIS.MvcFramework.Routing
             MvcFrameworkSettings settings)
         {
             var path = settings.WwwrootPath;
+            if (!Directory.Exists(path))
+            {
+                return;
+            }
+
             var files = Directory.GetFiles(path, "*", SearchOption.AllDirectories);
             foreach (var file in files)
             {

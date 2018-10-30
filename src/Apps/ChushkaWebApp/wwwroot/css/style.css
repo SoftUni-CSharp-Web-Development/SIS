@@ -1,0 +1,23 @@
+.chushka-bg-color {
+    background-color: red;
+    color: white;
+}
+
+.text-chushka {
+    color: red;
+}
+
+.nav-link-white {
+    color: #FFFFFF;
+}
+
+.hr-2 {
+    height: 2px;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    border: 0;
+    width: 98%;
+}

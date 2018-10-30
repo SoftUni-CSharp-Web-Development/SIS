@@ -3,9 +3,9 @@ using SIS.MvcFramework;
 
 namespace ChushkaWebApp.Controllers
 {
-    public class BaseController : Controller
+    public abstract class BaseController : Controller
     {
-        public BaseController()
+        protected BaseController()
         {
             this.Db = new ApplicationDbContext();
         }

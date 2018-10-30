@@ -162,6 +162,7 @@ namespace ChushkaWebApp.Controllers
             }
 
             this.Db.Remove(product);
+            // product.IsDeleted = true;
             this.Db.SaveChanges();
 
             return this.Redirect("/");

@@ -1,7 +1,7 @@
 ﻿<div class="container-fluid text-center">
     @if (User.Role == "Admin")
     {
-        <h2>Greetings, admin!</h2>
+        <h2>Greetings, @User.Username!</h2>
         <h4>Enjoy your work today.</h4>
     }
     @else

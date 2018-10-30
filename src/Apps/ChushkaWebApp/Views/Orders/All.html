@@ -1,0 +1,24 @@
+﻿<h1 class="text-center">All Orders</h1>
+<hr class="bg-secondary w-50" />
+
+<table class="table table-striped table-hover">
+    <tr>
+        <th>#</th>
+        <th>Order ID</th>
+        <th>Customer</th>
+        <th>Product</th>
+        <th>Ordered On</th>
+    </tr>
+    @for(int i = 0; i < Model.Orders.Count(); i++)
+    {
+        { var number = i + 1; }
+        { var order = Model.Orders.ToList()[i]; }
+        <tr>
+            <td>@number</td>
+            <td>@order.Id</td>
+            <td>@order.Username</td>
+            <td>@order.ProductName</td>
+            <td>@order.OrderedOn</td>
+        </tr>
+    }
+</table>

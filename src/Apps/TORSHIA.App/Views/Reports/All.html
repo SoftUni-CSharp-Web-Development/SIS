@@ -1,0 +1,16 @@
+﻿<h1 class="text-center text-torshia">Task Reports</h1>
+<hr class="hr-2 bg-torshia" />
+<table class="table w-75 mx-auto table-hover">
+    <thead>
+        <tr class="row">
+            <th class="col-md-1">#</th>
+            <th class="col-md-5">Task</th>
+            <th class="col-md-1">Level</th>
+            <th class="col-md-2">Status</th>
+            <th class="col-md-2">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @Model.Collection.Reports(@Item)
+    </tbody>
+</table>

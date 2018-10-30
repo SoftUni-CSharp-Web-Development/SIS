@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\SIS.Framework\SIS.Framework.csproj" />
+    <ProjectReference Include="..\TORSHIA.Common\TORSHIA.Common.csproj" />
+    <ProjectReference Include="..\TORSHIA.Data\TORSHIA.Data.csproj" />
+    <ProjectReference Include="..\TORSHIA.Domain\TORSHIA.Domain.csproj" />
+    <ProjectReference Include="..\TORSHIA.Services\TORSHIA.Services.csproj" />
+  </ItemGroup>
+
+</Project>

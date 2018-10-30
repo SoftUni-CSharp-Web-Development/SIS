@@ -1,0 +1,55 @@
+﻿<h1 class="text-center text-torshia">Create Task</h1>
+<hr class="hr-2 bg-torshia w-50" />
+<form class="mx-auto w-50" method="post" action="/Tasks/Create">
+    <div class="row d-flex justify-content-between">
+        <div class="form-group col-md-5">
+            <label for="title" class="text-torshia">Title</label>
+            <input type="text" class="form-control" id="title" placeholder="Title..." name="Title">
+        </div>
+        <div class="form-group col-md-5">
+            <label for="dueDate" class="text-torshia">Due Date</label>
+            <input type="date" class="form-control" id="dueDate" placeholder="Due Date..." name="DueDate">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="description" class="text-torshia">Description</label>
+        <textarea class="form-control" id="description" rows="4" placeholder="Description..."
+                  name="Description"></textarea>
+    </div>
+    <div class="channel-tags-holder mt-4">
+        <div class="form-group">
+            <div class="d-flex justify-content-center">
+                <label for="participants" class="text-torshia">Participants</label>
+            </div>
+            <input type="text" class="form-control" id="participants" placeholder="Participant1, Participant2, Participant3..." name="Participants">
+        </div>
+    </div>
+    <h6 class="text-center text-torshia">Affected Sectors</h6>
+    <hr class="hr-2 bg-torshia w-50 mt-4" />
+    <div class="channel-type-holder mt-4 d-flex justify-content-around">
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="Customers" name="AffectedSectors">
+            <label class="form-check-label" for="inlineCheckbox1">Customers</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="Marketing" name="AffectedSectors">
+            <label class="form-check-label" for="inlineCheckbox2">Marketing</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="Finances" name="AffectedSectors">
+            <label class="form-check-label" for="inlineCheckbox3">Finances</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox4" value="Internal" name="AffectedSectors">
+            <label class="form-check-label" for="inlineCheckbox4">Internal</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox5" value="Management" name="AffectedSectors">
+            <label class="form-check-label" for="inlineCheckbox5">Management</label>
+        </div>
+    </div>
+    <hr class="hr-2 bg-torshia w-50 mt-4" />
+    <div class="button-holder mt-2 d-flex justify-content-center">
+        <button type="submit" class="btn bg-torshia text-white">Create</button>
+    </div>
+</form>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using SIS.HTTP.Common;
 using SIS.HTTP.Cookies;
 using SIS.HTTP.Enums;
@@ -172,7 +173,21 @@ namespace SIS.HTTP.Requests
                 string[] parameterArguments = formDataParameter
                     .Split(HttpRequestParameterNameValueSeparator, StringSplitOptions.RemoveEmptyEntries);
 
-                this.FormData.Add(parameterArguments[0], parameterArguments[1]);
+                if (this.FormData.ContainsKey(parameterArguments[0]))
+                {
+                    if (this.FormData[parameterArguments[0]] is string ||
+                        !(this.FormData[parameterArguments[0]] is List<string>))
+                    {
+                        List<string> collection = new List<string>{ this.FormData[parameterArguments[0]].ToString() };
+                        this.FormData[parameterArguments[0]] = collection;
+                    }
+                        
+                    ((List<string>) this.FormData[parameterArguments[0]]).Add(HttpUtility.UrlDecode(parameterArguments[1]));
+                }
+                else
+                {
+                    this.FormData.Add(parameterArguments[0], HttpUtility.UrlDecode(parameterArguments[1]));
+                }
             }
         }
 

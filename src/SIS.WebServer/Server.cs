@@ -2,7 +2,7 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using SIS.WebServer.Routing;
+using SIS.WebServer.Api;
 
 namespace SIS.WebServer
 {
@@ -14,16 +14,19 @@ namespace SIS.WebServer
 
         private readonly TcpListener listener;
 
-        private readonly ServerRoutingTable serverRoutingTable;
+        private readonly IHttpRequestHandler httpRequestHandler;
 
         private bool isRunning;
 
-        public Server(int port, ServerRoutingTable serverRoutingTable)
+        private Server(int port)
         {
             this.port = port;
-            this.listener = new TcpListener(IPAddress.Parse(LocalhostIpAddress), port);
+            this.listener = new TcpListener(IPAddress.Parse(LocalhostIpAddress), this.port);
+        }
 
-            this.serverRoutingTable = serverRoutingTable;
+        public Server(int port, IHttpRequestHandler httpRequestHandler) : this(port)
+        {
+            this.httpRequestHandler = httpRequestHandler;
         }
 
         public void Run()
@@ -44,7 +47,7 @@ namespace SIS.WebServer
 
         public async void Listen(Socket client)
         {
-            var connectionHandler = new ConnectionHandler(client, this.serverRoutingTable);
+            ConnectionHandler connectionHandler = new ConnectionHandler(client, this.httpRequestHandler);
             await connectionHandler.ProcessRequestAsync();
         }
     }

@@ -1,0 +1,40 @@
+﻿<div class="task-head">
+    <h1 class="text-center text-torshia">Report - @Model.Id</h1>
+</div>
+<hr class="hr-2 bg-torshia" />
+<div class="d-flex justify-content-between">
+    <div class="task-main-data-holder w-75 mx-auto d-flex flex-column">
+        <h3 class="text-center text-torshia">Task: @Model.Task</h3>
+        <h3 class="text-center text-torshia">Level: @Model.Level</h3>
+        <h3 class="text-center text-torshia">Status: @Model.Status</h3>
+    </div>
+    <div class="task-main-data-holder w-75 mx-auto d-flex flex-column">
+        <h3 class="text-center text-torshia">Due Date: @Model.DueDate</h3>
+        <h3 class="text-center text-torshia">Reported On: @Model.ReportDate</h3>
+        <h3 class="text-center text-torshia">Reporter: @Model.Reporter</h3>
+    </div>
+</div>
+<hr class="hr-2 bg-torshia" />
+<div class="task-secondary-data-holder row d-flex justify-content-between">
+    <div class="task-participants-holder col-md-5">
+        <h3 class="text-center text-torshia">Participants</h3>
+        <div class="task-tags-holder w-75 mx-auto">
+            <h6 class="text-center text-torshia">
+                @Model.Participants
+            </h6>
+        </div>
+    </div>
+    <div class="task-participants-holder col-md-5">
+        <h3 class="text-center text-torshia">Affected Sectors</h3>
+        <div class="task-tags-holder w-75 mx-auto">
+            <h6 class="text-center text-torshia">@Model.AffectedSectors</h6>
+        </div>
+    </div>
+</div>
+<hr class="hr-2 bg-torshia" />
+<h3 class="text-center text-torshia">Task Description</h3>
+<div class="product-description-holder">
+    <p class="text-center text-torshia mt-4">
+        @Model.Description
+    </p>
+</div>

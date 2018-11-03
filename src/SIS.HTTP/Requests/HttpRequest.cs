@@ -153,7 +153,7 @@ namespace SIS.HTTP.Requests
             foreach (var queryParameter in queryParameters)
             {
                 string[] parameterArguments = queryParameter
-                    .Split('=', StringSplitOptions.RemoveEmptyEntries);
+                    .Split('=', StringSplitOptions.None);
 
                 this.QueryData.Add(parameterArguments[0], parameterArguments[1]);
             }
@@ -171,7 +171,7 @@ namespace SIS.HTTP.Requests
             foreach (var formDataParameter in formDataParams)
             {
                 string[] parameterArguments = formDataParameter
-                    .Split(HttpRequestParameterNameValueSeparator, StringSplitOptions.RemoveEmptyEntries);
+                    .Split(HttpRequestParameterNameValueSeparator, StringSplitOptions.None);
 
                 if (this.FormData.ContainsKey(parameterArguments[0]))
                 {

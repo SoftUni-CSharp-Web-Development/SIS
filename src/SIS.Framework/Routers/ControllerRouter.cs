@@ -76,11 +76,16 @@ namespace SIS.Framework.Routers
                     RequestUrlControllerActionSeparator
                     , StringSplitOptions.RemoveEmptyEntries);
 
-                result[0] = requestUrlSplit[0];
-                result[1] = requestUrlSplit[1];
+                result[0] = this.CapitalizeFirstLetter(requestUrlSplit[0].ToLower());
+                result[1] = this.CapitalizeFirstLetter(requestUrlSplit[1].ToLower());
             }
 
             return result;
+        }
+
+        private string CapitalizeFirstLetter(string s)
+        {
+            return s.First().ToString().ToUpper() + s.Substring(1);
         }
 
         private IEnumerable<MethodInfo> GetSuitableMethods(Controller controller, string actionName)
@@ -161,7 +166,7 @@ namespace SIS.Framework.Routers
             {
                 try
                 {
-                    object value = this.GetParameterFromRequestData(httpRequest, property.Name);
+                    object value = this.GetParameterFromRequestData(httpRequest, property.Name.ToLower());
                     property.SetValue(bindingModelInstance, Convert.ChangeType(value, property.PropertyType));
                 }
                 catch

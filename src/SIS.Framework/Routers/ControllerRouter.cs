@@ -120,8 +120,24 @@ namespace SIS.Framework.Routers
 
         private object GetParameterFromRequestData(IHttpRequest httpRequest, string paramName)
         {
-            if (httpRequest.QueryData.ContainsKey(paramName)) return httpRequest.QueryData[paramName];
-            if (httpRequest.FormData.ContainsKey(paramName)) return httpRequest.FormData[paramName];
+            paramName = paramName.ToLower();
+
+            var queryDataKey = httpRequest.QueryData.FirstOrDefault(x => x.Key.ToLower() == paramName).Key;
+            var queryDataKeyExists = queryDataKey != null;
+
+            if (queryDataKeyExists)
+            {
+                return httpRequest.QueryData[queryDataKey];
+            }
+
+            var formDataKey = httpRequest.FormData.FirstOrDefault(x => x.Key.ToLower() == paramName).Key;
+            var formDataKeyExists = formDataKey != null;
+
+            if (formDataKeyExists)
+            {
+                return httpRequest.FormData[formDataKey];
+            }
+
             return null;
         }
 
